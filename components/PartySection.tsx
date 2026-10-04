@@ -1,0 +1,150 @@
+"use client";
+
+import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
+import { Ghost, MapPin, Martini, Ticket, Info, CheckCircle2 } from "lucide-react";
+
+export function PartySection() {
+  const party = FIESTA_ALCOHORITMO as any; // Bypass TS for now if we didn't type deeply
+  const meta = ANIVERSARIO_METADATA as any;
+
+  return (
+    <section className="py-24 relative overflow-hidden bg-[#05030A]">
+      {/* Background decorations */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-fuchsia-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 mb-6 font-mono text-sm uppercase tracking-widest">
+            <Ghost size={16} /> Gran Cierre del {meta.titulo}
+          </div>
+          <h2 className="text-4xl sm:text-6xl font-black text-white mb-6 uppercase tracking-tight drop-shadow-2xl">
+            {party.nombre}
+          </h2>
+          <p className="text-xl sm:text-2xl text-zinc-300 font-medium">
+            {party.eslogan}
+          </p>
+        </div>
+
+        {/* Info Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md">
+            <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 text-purple-400">
+              <MapPin size={24} />
+            </div>
+            <h4 className="text-lg font-bold text-white mb-2">Locación</h4>
+            <p className="text-zinc-400">{party.lugar}</p>
+            <p className="text-sm text-zinc-500 mt-2 font-mono">Apertura: {party.horaApertura}</p>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md">
+            <div className="w-12 h-12 bg-fuchsia-500/20 rounded-2xl flex items-center justify-center mb-6 text-fuchsia-400">
+              <Ticket size={24} />
+            </div>
+            <h4 className="text-lg font-bold text-white mb-2">Entradas</h4>
+            <div className="flex flex-wrap gap-4 mb-2">
+              <div className="bg-black/30 px-3 py-1 rounded-lg">
+                <span className="text-xs text-zinc-500 block">General</span>
+                <span className="text-white font-bold">{party.preciosTier1.general} {party.preciosTier1.moneda}</span>
+              </div>
+              <div className="bg-fuchsia-500/20 px-3 py-1 rounded-lg border border-fuchsia-500/30">
+                <span className="text-xs text-fuchsia-300 block">VIP</span>
+                <span className="text-white font-bold">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-500 mt-2">{party.preciosTier1.condicion}</p>
+          </div>
+
+          <div className="bg-orange-500/5 border border-orange-500/20 rounded-3xl p-8 backdrop-blur-md">
+            <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-400">
+              <Info size={24} />
+            </div>
+            <h4 className="text-lg font-bold text-white mb-2">Bonus Exclusivo</h4>
+            <p className="text-zinc-400 text-sm mb-2 font-bold text-orange-300">{party.bonusDobleFiesta.titulo}</p>
+            <p className="text-zinc-500 text-xs leading-relaxed">{party.bonusDobleFiesta.descripcion}</p>
+          </div>
+        </div>
+
+        {/* Menu & Attractions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          
+          {/* Attractions & Timeline */}
+          <div className="space-y-12">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-6">Atracciones</h3>
+              <ul className="space-y-4">
+                {party.atracciones.map((attr: string, idx: number) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <CheckCircle2 className="text-fuchsia-500 shrink-0 mt-1" size={20} />
+                    <span className="text-zinc-300">{attr}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+              <h3 className="text-2xl font-bold text-white mb-6">Cronograma de la Noche</h3>
+              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-4 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/20 before:to-transparent">
+                {party.timelineNoche.map((item: any, idx: number) => (
+                  <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-white/10 bg-[#0B0813] text-zinc-500 group-[.is-active]:text-fuchsia-400 group-[.is-active]:border-fuchsia-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                      <div className="w-2 h-2 bg-fuchsia-500 rounded-full"></div>
+                    </div>
+                    <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] bg-white/5 border border-white/10 p-4 rounded-xl shadow">
+                      <div className="flex items-center justify-between mb-1">
+                        <time className="font-mono text-sm font-bold text-fuchsia-400">{item.hora}</time>
+                      </div>
+                      <div className="text-zinc-300 text-sm">{item.actividad}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Drinks Menu */}
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <Martini className="text-fuchsia-500" />
+              Menú Oficial de Combos
+            </h3>
+            
+            <div className="space-y-3">
+              {party.menuBebidas.map((bebida: any) => (
+                <div key={bebida.id} className="group bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4 transition-colors cursor-default">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-12 h-12 rounded-xl bg-black/40 flex items-center justify-center text-2xl shrink-0">
+                      {bebida.icono}
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-white font-bold group-hover:text-fuchsia-300 transition-colors truncate">{bebida.nombre}</h4>
+                      <p className="text-xs text-zinc-500 truncate">{bebida.descripcion}</p>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="block font-mono font-bold text-lg text-white">{bebida.precioBs} Bs</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Combos Grupales CTA */}
+            <div className="mt-8 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/20 border border-fuchsia-500/30 rounded-3xl p-6 text-center">
+              <h4 className="text-xl font-bold text-white mb-2">¿Vienes en grupo?</h4>
+              <p className="text-zinc-300 text-sm mb-4">Aprovecha los combos grupales para 10, 15 o 20 personas con manillas gratis y mesas incluidas.</p>
+              <a 
+                href={meta.contactoMesasYCombos.enlace}
+                target="_blank" rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto"
+              >
+                Reservar Mesa / Combo
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
