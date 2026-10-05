@@ -26,6 +26,11 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
       return avisos.some((aviso: any) => aviso.url_archivo);
     }
     return false;
+  }).sort((a, b) => {
+    if (!a.fecha_expiracion && !b.fecha_expiracion) return 0;
+    if (!a.fecha_expiracion) return 1;
+    if (!b.fecha_expiracion) return -1;
+    return new Date(a.fecha_expiracion).getTime() - new Date(b.fecha_expiracion).getTime();
   });
 
   if (convocatorias.length === 0) return null;

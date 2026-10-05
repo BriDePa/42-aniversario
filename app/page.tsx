@@ -35,6 +35,8 @@ export default async function Home() {
     ubicacion,
     ubicacion_url,
     whatsapp_mensaje,
+    whatsapp_grupo_url,
+    formulario_url,
     comision,
     sesiones (
       id,
@@ -104,6 +106,8 @@ export default async function Home() {
         encargados: ev.encargados || [],
         telefonoReferencia: sesion?.telefono_referencia || null,
         whatsappMensajeSugerido: ev.whatsapp_mensaje || `Hola, tengo una duda sobre ${ev.titulo}`,
+        whatsapp_grupo_url: ev.whatsapp_grupo_url || null,
+        formulario_url: ev.formulario_url || null,
         rawAvisos: ev.avisos,
       } as any;
     });

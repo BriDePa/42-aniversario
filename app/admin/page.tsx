@@ -18,6 +18,7 @@ export default async function AdminDashboard() {
     .select(`
       id, slug, titulo, categoria, ubicacion, ubicacion_url, descripcion, imagen_url, banner_url,
       fecha_inicio, fecha_fin, fecha_expiracion, comision, whatsapp_mensaje, es_convocatoria, 
+      bases_url, convocatoria_descripcion, whatsapp_grupo_url, formulario_url,
       sesiones(id, fecha, hora_inicio, hora_fin, detalle),
       encargados(id, nombre, telefono, rol, email),
       avisos(id, titulo, url_archivo, descripcion)

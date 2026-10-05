@@ -20,6 +20,8 @@ export interface EventItem {
   encargados: Array<{ nombre: string; telefono: string | null; rol: string }>;
   telefonoReferencia?: string;
   whatsappMensajeSugerido: string;
+  whatsapp_grupo_url?: string | null;
+  formulario_url?: string | null;
 }
 
 export const ANIVERSARIO_METADATA: Record<string, unknown>;

@@ -50,6 +50,8 @@ export async function saveEvent(formData: FormData) {
   const es_convocatoria = formData.get('es_convocatoria') === 'true'
   const bases_url = formData.get('bases_url') as string | null
   const convocatoria_descripcion = formData.get('convocatoria_descripcion') as string | null
+  const whatsapp_grupo_url = formData.get('whatsapp_grupo_url') as string | null
+  const formulario_url = formData.get('formulario_url') as string | null
   
   const sesionesStr = formData.get('sesiones') as string
   const sesiones = sesionesStr ? JSON.parse(sesionesStr) : []
@@ -125,7 +127,9 @@ export async function saveEvent(formData: FormData) {
     whatsapp_mensaje,
     es_convocatoria,
     bases_url,
-    convocatoria_descripcion
+    convocatoria_descripcion,
+    whatsapp_grupo_url,
+    formulario_url
   }
 
   if (imagen_url) {

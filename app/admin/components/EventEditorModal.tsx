@@ -48,6 +48,8 @@ const eventSchema = z.object({
   fecha_expiracion: z.string().optional(),
   bases_url: z.string().optional(),
   convocatoria_descripcion: z.string().optional(),
+  whatsapp_grupo_url: z.string().optional(),
+  formulario_url: z.string().optional(),
   sesiones: z.array(z.object({
     id: z.string().optional(),
     fecha: z.string().min(1, "Fecha es requerida"),
@@ -90,6 +92,8 @@ type Evento = {
   es_convocatoria?: boolean
   bases_url?: string | null
   convocatoria_descripcion?: string | null
+  whatsapp_grupo_url?: string | null
+  formulario_url?: string | null
   sesiones?: any[]
   encargados?: any[]
   avisos?: any[]
@@ -158,6 +162,8 @@ export function EventEditorModal({
       es_convocatoria: false,
       bases_url: "",
       convocatoria_descripcion: "",
+      whatsapp_grupo_url: "",
+      formulario_url: "",
       sesiones: [],
       encargados: [],
       avisos: [],
@@ -197,6 +203,8 @@ export function EventEditorModal({
         es_convocatoria: !!event.es_convocatoria,
         bases_url: event.bases_url || "",
         convocatoria_descripcion: event.convocatoria_descripcion || "",
+        whatsapp_grupo_url: event.whatsapp_grupo_url || "",
+        formulario_url: event.formulario_url || "",
         sesiones: event.sesiones?.map(s => ({
           id: s.id,
           fecha: s.fecha,
@@ -237,6 +245,8 @@ export function EventEditorModal({
         es_convocatoria: false,
         bases_url: "",
         convocatoria_descripcion: "",
+        whatsapp_grupo_url: "",
+        formulario_url: "",
         sesiones: [],
         encargados: [],
         avisos: [],
@@ -268,6 +278,8 @@ export function EventEditorModal({
       formData.append("es_convocatoria", (!!data.es_convocatoria).toString())
       if (data.bases_url) formData.append("bases_url", data.bases_url)
       if (data.convocatoria_descripcion) formData.append("convocatoria_descripcion", data.convocatoria_descripcion)
+      if (data.whatsapp_grupo_url) formData.append("whatsapp_grupo_url", data.whatsapp_grupo_url)
+      if (data.formulario_url) formData.append("formulario_url", data.formulario_url)
       
       formData.append("sesiones", JSON.stringify(data.sesiones || []))
       formData.append("encargados", JSON.stringify(data.encargados || []))
@@ -671,6 +683,16 @@ export function EventEditorModal({
                         <div className="space-y-1.5">
                           <Label className="text-xs text-fuchsia-400 font-semibold">Link (Ej. PDF de bases o Drive)</Label>
                           <Input type="url" placeholder="https://..." {...register("bases_url")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Enlace Grupo de WhatsApp</Label>
+                          <Input type="url" placeholder="https://chat.whatsapp.com/..." {...register("whatsapp_grupo_url")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Enlace Formulario de Inscripción</Label>
+                          <Input type="url" placeholder="https://forms.gle/..." {...register("formulario_url")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
                         </div>
 
                         <div className="space-y-1.5">

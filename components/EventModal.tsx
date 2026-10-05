@@ -175,34 +175,57 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
 
             <EventCountdown targetDate={targetDateStr} />
 
-            {event.basesUrl && (
-              <a href={event.basesUrl} target="_blank" rel="noreferrer" className="block w-full text-center mt-4 py-3 px-4 rounded-xl border border-fuchsia-500 text-fuchsia-400 font-bold hover:bg-fuchsia-500 hover:text-white transition-colors shadow-[0_0_15px_rgba(236,72,153,0.2)]">
-                📄 Ver Convocatoria Oficial
-              </a>
-            )}
+            {event.esConvocatoria ? (
+              <div className="flex flex-col gap-3 mt-8">
+                {event.basesUrl && (
+                  <a href={event.basesUrl} target="_blank" rel="noreferrer" className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-fuchsia-500 bg-fuchsia-500/10 text-fuchsia-400 font-bold hover:bg-fuchsia-500 hover:text-white transition-all shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+                    📄 Bases de Convocatoria
+                  </a>
+                )}
+                {event.formulario_url && (
+                  <a href={event.formulario_url} target="_blank" rel="noreferrer" className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-fuchsia-500 text-white font-bold hover:opacity-90 transition-all shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+                    📝 Formulario de Inscripción
+                  </a>
+                )}
+                {event.whatsapp_grupo_url && (
+                  <a href={event.whatsapp_grupo_url} target="_blank" rel="noreferrer" className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl hover:bg-[#20bd5a] transition-all shadow-[0_0_15px_rgba(37,211,102,0.3)]">
+                    <MessageCircle size={18} />
+                    Grupo de WhatsApp
+                  </a>
+                )}
+              </div>
+            ) : (
+              <>
+                {event.basesUrl && (
+                  <a href={event.basesUrl} target="_blank" rel="noreferrer" className="block w-full text-center mt-4 py-3 px-4 rounded-xl border border-fuchsia-500 text-fuchsia-400 font-bold hover:bg-fuchsia-500 hover:text-white transition-colors shadow-[0_0_15px_rgba(236,72,153,0.2)]">
+                    📄 Ver Convocatoria Oficial
+                  </a>
+                )}
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-8">
-              {whatsappUrl && (
-                <a 
-                  href={whatsappUrl} 
-                  target="_blank" rel="noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-[0_0_15px_rgba(37,211,102,0.3)] shrink-0"
-                >
-                  <MessageCircle size={18} />
-                  WhatsApp
-                </a>
-              )}
-              
-              <a 
-                href={gcalUrl} 
-                target="_blank" rel="noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-4 rounded-xl transition-colors border border-white/10 shrink-0"
-              >
-                <CalendarPlus size={18} />
-                Agendar Evento
-              </a>
-            </div>
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                  {whatsappUrl && (
+                    <a 
+                      href={whatsappUrl} 
+                      target="_blank" rel="noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-[0_0_15px_rgba(37,211,102,0.3)] shrink-0"
+                    >
+                      <MessageCircle size={18} />
+                      WhatsApp
+                    </a>
+                  )}
+                  
+                  <a 
+                    href={gcalUrl} 
+                    target="_blank" rel="noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-4 rounded-xl transition-colors border border-white/10 shrink-0"
+                  >
+                    <CalendarPlus size={18} />
+                    Agendar Evento
+                  </a>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
