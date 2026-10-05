@@ -76,7 +76,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
                       onClick={(e) => { e.stopPropagation(); setSelectedEvent(ev); }}
                       className="mt-auto px-8 py-3 bg-fuchsia-500 hover:bg-fuchsia-400 text-white rounded-xl font-bold shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all flex items-center gap-2"
                     >
-                      Ver Bases
+                      Detalles
                     </button>
                   </div>
                 }
