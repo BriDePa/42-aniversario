@@ -126,12 +126,12 @@ export default async function Home() {
       <Hero />
       <CalendarView events={mappedEvents} />
       
-      <div className="w-full my-4 py-8 overflow-hidden">
+      <div className="w-full py-4 overflow-hidden">
         <TextLoop text="CONVOCATORIAS" separator="✦" shape="line" fontSize={32} speed={120} />
       </div>
       <ConvocatoriasSection events={mappedEvents} />
 
-      <div className="w-full my-4 py-8 overflow-hidden">
+      <div className="w-full py-4 overflow-hidden">
         <TextLoop text="PROGRAMA COMPLETO" separator="✦" shape="line" fontSize={32} speed={120} />
       </div>
       <FullSchedule events={mappedEvents} />

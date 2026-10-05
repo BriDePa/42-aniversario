@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MapPin } from "lucide-react";
 import { EventItem } from "@/lib/eventsData";
 import { EventModal } from "./EventModal";
 import FlipCard from "./FlipCard";
@@ -33,14 +34,22 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
     return new Date(a.fecha_expiracion).getTime() - new Date(b.fecha_expiracion).getTime();
   });
 
-  const convocatorias = Array.from(new Map(allConvocatoriasFiltered.map(c => [c.evento_id || c.id, c])).values());
+    const convocatorias: EventItem[] = [];
+  const seenIds = new Set();
+  for (const c of allConvocatoriasFiltered) {
+    const key = c.evento_id || c.id;
+    if (!seenIds.has(key)) {
+      seenIds.add(key);
+      convocatorias.push(c);
+    }
+  }
 
   if (convocatorias.length === 0) return null;
 
 
 
   return (
-    <section className="py-20 bg-[#0B0813] relative z-20 border-t border-white/5" id="convocatorias">
+    <section className="py-10 bg-[#0B0813] relative z-20 border-t border-white/5" id="convocatorias">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 flex flex-col items-center">
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
@@ -58,28 +67,29 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
                   <div className="w-full h-full relative overflow-hidden">
                     <img 
                       src={ev.banner_url || ev.imagenUrl || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop"} 
-                      alt={ev.titulo} 
+                      alt={ev.tituloOriginalNotion || ev.titulo} 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0B0813] via-[#0B0813]/40 to-transparent flex flex-col justify-end p-6">
                       <span className="text-xs font-bold text-fuchsia-400 mb-2 uppercase tracking-widest">{ev.categoria || "Convocatoria"}</span>
-                      <h3 className="text-2xl font-bold text-white leading-tight">{ev.titulo}</h3>
+                      <h3 className="text-2xl font-bold text-white leading-tight">{ev.tituloOriginalNotion || ev.titulo}</h3>
                     </div>
                   </div>
                 }
                 back={
                   <div className="w-full h-full bg-gradient-to-br from-[#1A1528] to-[#0B0813] p-8 flex flex-col items-center justify-center text-center border border-fuchsia-500/20 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-500 to-purple-500"></div>
-                    <h3 className="text-xl font-bold text-white mb-4 leading-snug">{ev.titulo}</h3>
+                    <h3 className="text-xl font-bold text-white mb-4 leading-snug">{ev.tituloOriginalNotion || ev.titulo}</h3>
                       {ev.fecha_expiracion && (
                         <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                           Expira: {new Date(ev.fecha_expiracion).toLocaleString('es-BO', { timeZone: 'America/La_Paz', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}
                         </div>
                       )}
-                      <p className="text-sm text-zinc-400 mb-6 line-clamp-4 leading-relaxed">
-                      {ev.convocatoria_descripcion || ev.descripcion}
-                    </p>
+                      <div className="flex items-center justify-center gap-2 text-zinc-300 text-sm mb-6">
+                        <MapPin className="text-fuchsia-400 shrink-0" size={16} />
+                        <span className="line-clamp-2">{ev.ubicacion || 'Por definir'}</span>
+                      </div>
                     <button 
                       onPointerDown={(e) => e.stopPropagation()}
                       onPointerUp={(e) => e.stopPropagation()}

@@ -43,7 +43,7 @@ export function CalendarView({ events = [] }: { events?: EventItem[] }) {
   };
 
   return (
-    <section className="py-20 bg-[#0B0813] relative z-20 border-t border-white/5" id="calendario">
+    <section className="py-10 bg-[#0B0813] relative z-20 border-t border-white/5" id="calendario">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative">
         <div className="text-center mb-12 flex flex-col items-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight flex items-center justify-center gap-3">

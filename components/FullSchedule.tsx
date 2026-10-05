@@ -49,7 +49,7 @@ export function FullSchedule({ events = [] }: { events?: EventItem[] }) {
   }, [events, selectedCategory, selectedDay]);
 
   return (
-    <section className="py-20 bg-[#0B0813] relative z-20 border-t border-white/5" id="eventos">
+    <section className="py-10 bg-[#0B0813] relative z-20 border-t border-white/5" id="eventos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 mb-4 tracking-tight">
