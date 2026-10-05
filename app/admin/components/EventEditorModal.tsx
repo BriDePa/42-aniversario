@@ -198,7 +198,7 @@ export function EventEditorModal({
         descripcion: event.descripcion || "",
         fecha_inicio: event.fecha_inicio ? new Date(event.fecha_inicio).toISOString().split('T')[0] : "",
         fecha_fin: event.fecha_fin ? new Date(event.fecha_fin).toISOString().split('T')[0] : "",
-        fecha_expiracion: event.fecha_expiracion ? new Date(event.fecha_expiracion).toISOString().slice(0, 16) : "",
+        fecha_expiracion: event.fecha_expiracion ? new Date(new Date(event.fecha_expiracion).getTime() - 4 * 3600000).toISOString().slice(0, 16) : "",
         whatsapp_mensaje: event.whatsapp_mensaje || "",
         es_convocatoria: !!event.es_convocatoria,
         bases_url: event.bases_url || "",

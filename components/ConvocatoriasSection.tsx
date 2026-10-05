@@ -74,7 +74,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
                       {ev.fecha_expiracion && (
                         <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                          Expira: {new Date(ev.fecha_expiracion).toLocaleString('es-BO', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                          Expira: {new Date(ev.fecha_expiracion).toLocaleString('es-BO', { timeZone: 'America/La_Paz', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}
                         </div>
                       )}
                       <p className="text-sm text-zinc-400 mb-6 line-clamp-4 leading-relaxed">
