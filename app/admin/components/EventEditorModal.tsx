@@ -339,7 +339,7 @@ export function EventEditorModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-[#0B0813]/95 backdrop-blur-md border-l-cyan-500/30 text-white w-full sm:max-w-xl md:max-w-2xl max-h-[90vh] overflow-y-auto shadow-[-10px_0_30px_rgba(34,211,238,0.15)] z-50">
+      <DialogContent className="bg-[#0B0813]/95 backdrop-blur-md border-l-cyan-500/30 text-white w-full sm:max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[90vh] overflow-y-auto shadow-[-10px_0_30px_rgba(34,211,238,0.15)] z-50">
         <DialogHeader className="mb-8">
           <DialogTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-fuchsia-500 drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
             {isEditing ? "Editar Evento" : "Nuevo Evento"}
@@ -351,7 +351,7 @@ export function EventEditorModal({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 pb-24">
           <input type="hidden" name="clear_imagen" value={!imagePreview ? "true" : "false"} />
           <input type="hidden" name="clear_banner" value={!bannerPreview ? "true" : "false"} />
           {errorMsg && (
@@ -367,7 +367,7 @@ export function EventEditorModal({
               <AccordionTrigger className="text-zinc-300 hover:text-white hover:no-underline font-semibold py-4">
                 Información Básica
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-4">
+              <AccordionContent className="space-y-6 pb-6 p-4">
                 <div className="space-y-2">
                   <Label htmlFor="titulo" className="text-zinc-300">Título</Label>
                   <Input id="titulo" {...register("titulo")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
@@ -446,7 +446,7 @@ export function EventEditorModal({
               <AccordionTrigger className="text-zinc-300 hover:text-white hover:no-underline font-semibold py-4">
                 Multimedia & Redes
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-4">
+              <AccordionContent className="space-y-6 pb-6 p-4">
                 <div className="space-y-2">
                   <Label className="text-zinc-300">Imagen del Evento</Label>
                   <div className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/20 transition-colors relative group ${!canEditMainFields ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black/30'}`}>
@@ -495,7 +495,7 @@ export function EventEditorModal({
               <AccordionTrigger className="text-zinc-300 hover:text-white hover:no-underline font-semibold py-4">
                 Sesiones
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-4">
+              <AccordionContent className="space-y-6 pb-6 p-4">
                 {canEditMainFields && (
                   <div className="flex justify-end">
                     <Button type="button" variant="outline" size="sm" onClick={() => appendSesion({ fecha: "", hora_inicio: "", hora_fin: "", detalle: "", telefono_referencia: "" })} className="bg-purple-500/20 border-purple-500/50 text-purple-300 hover:bg-purple-500/30">
@@ -505,7 +505,7 @@ export function EventEditorModal({
                   </div>
                 )}
                 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {sesionesFields.map((field, index) => (
                     <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
                       <div className="flex justify-between items-center">
@@ -555,7 +555,7 @@ export function EventEditorModal({
               <AccordionTrigger className="text-zinc-300 hover:text-white hover:no-underline font-semibold py-4">
                 Encargados
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-4">
+              <AccordionContent className="space-y-6 pb-6 p-4">
                 {canEditMainFields && (
                   <div className="flex justify-end">
                     <Button type="button" variant="outline" size="sm" onClick={() => appendEncargado({ nombre: "", telefono: "", rol: "", email: "" })} className="bg-cyan-500/20 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30">
@@ -565,7 +565,7 @@ export function EventEditorModal({
                   </div>
                 )}
                 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {encargadosFields.map((field, index) => (
                     <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
                       <div className="flex justify-between items-center">
@@ -647,7 +647,7 @@ export function EventEditorModal({
                       </Button>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       {avisosFields.map((field, index) => (
                         <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
                           <div className="flex justify-between items-center">
