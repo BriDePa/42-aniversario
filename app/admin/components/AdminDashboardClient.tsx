@@ -44,6 +44,24 @@ export default function AdminDashboardClient({
   const [selectedEvent, setSelectedEvent] = useState<Evento | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [modalTabConfig, setModalTabConfig] = useState<{accordion?: string, tab?: string}>({})
+  const [isDeleting, setIsDeleting] = useState<string | null>(null)
+
+  const handleDeleteEvent = async (id: string) => {
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este evento? Esta acción no se puede deshacer.")) return;
+    setIsDeleting(id);
+    try {
+      const formData = new FormData();
+      formData.append("id", id);
+      // Dynamically import to avoid large client bundles, or assume deleteEvent is passed as prop
+      const { deleteEvent } = await import("../actions");
+      await deleteEvent(formData);
+    } catch (e) {
+      console.error(e);
+      alert("Error al eliminar el evento");
+    } finally {
+      setIsDeleting(null);
+    }
+  }
 
   const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || 'deymarbrian02@gmail.com';
   const isSuperAdmin = userEmail === superAdminEmail;
@@ -216,13 +234,15 @@ export default function AdminDashboardClient({
                       </div>
                       
                       {isSuperAdmin && (
-                        <button 
-                          className="flex-1 sm:flex-none flex items-center justify-center py-2 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg text-sm text-red-400 transition-colors gap-2"
-                        >
-                          <TrashIcon className="w-4 h-4" />
-                          Eliminar
-                        </button>
-                      )}
+                          <button 
+                            onClick={() => handleDeleteEvent(evento.id)}
+                            disabled={isDeleting === evento.id}
+                            className={`flex-1 sm:flex-none flex items-center justify-center py-2 px-4 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg text-sm text-red-400 transition-colors gap-2 ${isDeleting === evento.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          >
+                            <TrashIcon className="w-4 h-4" />
+                            {isDeleting === evento.id ? 'Eliminando...' : 'Eliminar'}
+                          </button>
+                        )}
                     </div>
                   </div>
                 </div>

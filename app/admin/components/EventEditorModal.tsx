@@ -280,6 +280,8 @@ export function EventEditorModal({
       if (data.convocatoria_descripcion) formData.append("convocatoria_descripcion", data.convocatoria_descripcion)
       if (data.whatsapp_grupo_url) formData.append("whatsapp_grupo_url", data.whatsapp_grupo_url)
       if (data.formulario_url) formData.append("formulario_url", data.formulario_url)
+      formData.append("clear_imagen", (!imagePreview).toString())
+      formData.append("clear_banner", (!bannerPreview).toString())
       
       formData.append("sesiones", JSON.stringify(data.sesiones || []))
       formData.append("encargados", JSON.stringify(data.encargados || []))
@@ -350,6 +352,8 @@ export function EventEditorModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pb-20">
+          <input type="hidden" name="clear_imagen" value={!imagePreview ? "true" : "false"} />
+          <input type="hidden" name="clear_banner" value={!bannerPreview ? "true" : "false"} />
           {errorMsg && (
             <div className="p-3 rounded bg-red-500/20 border border-red-500/50 text-red-200 text-sm">
               {errorMsg}
