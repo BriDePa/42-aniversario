@@ -14,6 +14,7 @@ export interface EventItem {
   fecha_expiracion?: string | null;
   banner_url?: string | null;
   descripcion: string;
+  convocatoria_descripcion?: string | null;
   basesUrl: string | null;
   imagenUrl?: string;
   encargados: Array<{ nombre: string; telefono: string | null; rol: string }>;
