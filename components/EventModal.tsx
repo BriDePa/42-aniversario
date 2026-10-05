@@ -57,7 +57,7 @@ function EventCountdown({ targetDate }: { targetDate: string }) {
   );
 }
 
-export function EventModal({ event, onClose }: { event: EventItem, onClose: () => void }) {
+export function EventModal({ event, onClose, allConvocatorias }: { event: EventItem, onClose: () => void, allConvocatorias?: EventItem[] }) {
   // Fix for hydration and React Portal
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -123,9 +123,27 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
             
             <h2 className="text-2xl font-bold text-white mb-4 leading-tight">{event.titulo}</h2>
             
-            {event.imagenUrl && (
+            {event.imagenUrl && (!allConvocatorias || allConvocatorias.length === 0) && (
               <div className="mb-6 rounded-xl overflow-hidden border border-white/10 shadow-lg">
                 <img src={event.imagenUrl} alt={event.titulo} className="w-full h-auto object-cover" />
+              </div>
+            )}
+
+            {allConvocatorias && allConvocatorias.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-fuchsia-400 font-semibold mb-3 text-sm uppercase tracking-wider">Galería de Convocatorias</h3>
+                <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 custom-scrollbar">
+                  {[event, ...allConvocatorias.filter(c => c.id !== event.id)].map(c => (
+                    c.imagenUrl && (
+                      <div key={c.id} className="min-w-[85%] sm:min-w-[70%] shrink-0 snap-center rounded-xl overflow-hidden border border-white/10 shadow-lg relative bg-black/40">
+                        <img src={c.imagenUrl} alt={c.titulo} className="w-full h-auto object-contain max-h-[60vh] mx-auto" />
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-md p-3 text-center text-sm font-semibold text-white">
+                          {c.titulo}
+                        </div>
+                      </div>
+                    )
+                  ))}
+                </div>
               </div>
             )}
 

@@ -94,7 +94,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
 
       {/* Modal */}
       {selectedEvent && (
-        <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+        <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} allConvocatorias={convocatorias} />
       )}
     </section>
   );

@@ -383,13 +383,32 @@ export function EventEditorModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="categoria" className="text-zinc-300">Categoría</Label>
-                    <Input id="categoria" {...register("categoria")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
+                    <Input id="categoria" list="categorias-list" {...register("categoria")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
+                    <datalist id="categorias-list">
+                      <option value="Conferencia" />
+                      <option value="Taller" />
+                      <option value="Torneo" />
+                      <option value="Seminario" />
+                      <option value="Concurso" />
+                      <option value="Fiesta" />
+                      <option value="Deportes" />
+                      <option value="Otros" />
+                    </datalist>
                     {errors.categoria && <p className="text-red-400 text-xs">{errors.categoria.message}</p>}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="ubicacion" className="text-zinc-300">Ubicación</Label>
-                    <Input id="ubicacion" {...register("ubicacion")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
+                    <Input id="ubicacion" list="ubicaciones-list" {...register("ubicacion")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
+                    <datalist id="ubicaciones-list">
+                      <option value="Auditorio Paraninfo Universitario" />
+                      <option value="Auditorio Carrera de Informática" />
+                      <option value="Laboratorio Superior" />
+                      <option value="Laboratorio de Desarrollo" />
+                      <option value="Laboratorio de Redes" />
+                      <option value="Cancha de la Facultad" />
+                      <option value="Virtual" />
+                    </datalist>
                     {errors.ubicacion && <p className="text-red-400 text-xs">{errors.ubicacion.message}</p>}
                   </div>
                 </div>
