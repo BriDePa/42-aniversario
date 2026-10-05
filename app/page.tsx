@@ -10,6 +10,8 @@ import TextLoop from "@/components/TextLoop";
 import { createClient } from "@/utils/supabase/server";
 import { EventItem } from "@/lib/eventsData";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let events: any[] = [];
   try {
