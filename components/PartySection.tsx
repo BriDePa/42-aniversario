@@ -2,68 +2,89 @@
 
 import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
 import { Ghost, MapPin, Martini, Ticket, Info, CheckCircle2 } from "lucide-react";
+import BorderGlow from "./BorderGlow";
 
 export function PartySection() {
-  const party = FIESTA_ALCOHORITMO as any; // Bypass TS for now if we didn't type deeply
+  const party = FIESTA_ALCOHORITMO as any;
   const meta = ANIVERSARIO_METADATA as any;
 
   return (
-    <section className="py-24 relative overflow-hidden bg-[#05030A]">
+    <section className="py-24 relative overflow-hidden bg-[#05030A]" id="fiesta">
       {/* Background decorations */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-fuchsia-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 mb-6 font-mono text-sm uppercase tracking-widest">
+        <div className="text-center mb-16 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 mb-10 font-mono text-sm uppercase tracking-widest">
             <Ghost size={16} /> Gran Cierre del {meta.titulo}
           </div>
-          <h2 className="text-4xl sm:text-6xl font-black text-white mb-6 uppercase tracking-tight drop-shadow-2xl">
-            {party.nombre}
-          </h2>
-          <p className="text-xl sm:text-2xl text-zinc-300 font-medium">
+          
+          <div className="relative mb-8 max-w-4xl mx-auto">
+             {/* Billboard Image behind */}
+             <img src="/alcohoritmo2.jpg" alt="Alcohoritmo Billboard" className="w-full rounded-3xl opacity-60 mix-blend-screen shadow-[0_0_100px_rgba(255,0,255,0.2)]" />
+             {/* Text Logo overlapping */}
+             <img src="/alcohoritmo1.png" alt="Alcohoritmo Logo" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 sm:w-3/4 drop-shadow-[0_0_30px_rgba(255,0,255,0.8)]" />
+          </div>
+
+          <p className="text-xl sm:text-2xl text-zinc-300 font-medium max-w-2xl mt-4">
             {party.eslogan}
           </p>
         </div>
 
         {/* Info Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 text-purple-400">
-              <MapPin size={24} />
+          <BorderGlow
+             colors={["#a855f7", "#ec4899"]}
+             className="w-full"
+          >
+            <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full">
+              <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 text-purple-400">
+                <MapPin size={24} />
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">Locación</h4>
+              <p className="text-zinc-400">{party.lugar}</p>
+              <p className="text-sm text-zinc-500 mt-2 font-mono">Apertura: {party.horaApertura}</p>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">Locación</h4>
-            <p className="text-zinc-400">{party.lugar}</p>
-            <p className="text-sm text-zinc-500 mt-2 font-mono">Apertura: {party.horaApertura}</p>
-          </div>
+          </BorderGlow>
           
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md">
-            <div className="w-12 h-12 bg-fuchsia-500/20 rounded-2xl flex items-center justify-center mb-6 text-fuchsia-400">
-              <Ticket size={24} />
-            </div>
-            <h4 className="text-lg font-bold text-white mb-2">Entradas</h4>
-            <div className="flex flex-wrap gap-4 mb-2">
-              <div className="bg-black/30 px-3 py-1 rounded-lg">
-                <span className="text-xs text-zinc-500 block">General</span>
-                <span className="text-white font-bold">{party.preciosTier1.general} {party.preciosTier1.moneda}</span>
+          <BorderGlow
+             colors={["#ec4899", "#8b5cf6"]}
+             className="w-full"
+          >
+            <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full">
+              <div className="w-12 h-12 bg-fuchsia-500/20 rounded-2xl flex items-center justify-center mb-6 text-fuchsia-400">
+                <Ticket size={24} />
               </div>
-              <div className="bg-fuchsia-500/20 px-3 py-1 rounded-lg border border-fuchsia-500/30">
-                <span className="text-xs text-fuchsia-300 block">VIP</span>
-                <span className="text-white font-bold">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+              <h4 className="text-lg font-bold text-white mb-2">Entradas</h4>
+              <div className="flex flex-wrap gap-4 mb-2">
+                <div className="bg-black/30 px-3 py-1 rounded-lg">
+                  <span className="text-xs text-zinc-500 block">General</span>
+                  <span className="text-white font-bold">{party.preciosTier1.general} {party.preciosTier1.moneda}</span>
+                </div>
+                <div className="bg-fuchsia-500/20 px-3 py-1 rounded-lg border border-fuchsia-500/30">
+                  <span className="text-xs text-fuchsia-300 block">VIP</span>
+                  <span className="text-white font-bold">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+                </div>
               </div>
+              <p className="text-xs text-zinc-500 mt-2">{party.preciosTier1.condicion}</p>
             </div>
-            <p className="text-xs text-zinc-500 mt-2">{party.preciosTier1.condicion}</p>
-          </div>
+          </BorderGlow>
 
-          <div className="bg-orange-500/5 border border-orange-500/20 rounded-3xl p-8 backdrop-blur-md">
-            <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-400">
-              <Info size={24} />
+          <BorderGlow
+             colors={["#f97316", "#f43f5e"]}
+             className="w-full"
+          >
+            <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full">
+              <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-400">
+                <Info size={24} />
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">Bonus Exclusivo</h4>
+              <p className="text-zinc-400 text-sm mb-2 font-bold text-orange-300">{party.bonusDobleFiesta.titulo}</p>
+              <p className="text-zinc-500 text-xs leading-relaxed">{party.bonusDobleFiesta.descripcion}</p>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">Bonus Exclusivo</h4>
-            <p className="text-zinc-400 text-sm mb-2 font-bold text-orange-300">{party.bonusDobleFiesta.titulo}</p>
-            <p className="text-zinc-500 text-xs leading-relaxed">{party.bonusDobleFiesta.descripcion}</p>
-          </div>
+          </BorderGlow>
         </div>
 
         {/* Menu & Attractions */}
@@ -91,7 +112,7 @@ export function PartySection() {
                     <div className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-white/10 bg-[#0B0813] text-zinc-500 group-[.is-active]:text-fuchsia-400 group-[.is-active]:border-fuchsia-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                       <div className="w-2 h-2 bg-fuchsia-500 rounded-full"></div>
                     </div>
-                    <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] bg-white/5 border border-white/10 p-4 rounded-xl shadow">
+                    <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2rem)] bg-[#0a0a0a] border border-white/10 p-4 rounded-xl shadow">
                       <div className="flex items-center justify-between mb-1">
                         <time className="font-mono text-sm font-bold text-fuchsia-400">{item.hora}</time>
                       </div>
@@ -112,7 +133,7 @@ export function PartySection() {
             
             <div className="space-y-3">
               {party.menuBebidas.map((bebida: any) => (
-                <div key={bebida.id} className="group bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4 transition-colors cursor-default">
+                <div key={bebida.id} className="group bg-[#0a0a0a] hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4 transition-colors cursor-default">
                   <div className="flex items-center gap-4 min-w-0">
                     <div className="w-12 h-12 rounded-xl bg-black/40 flex items-center justify-center text-2xl shrink-0">
                       {bebida.icono}
@@ -130,13 +151,13 @@ export function PartySection() {
             </div>
 
             {/* Combos Grupales CTA */}
-            <div className="mt-8 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/20 border border-fuchsia-500/30 rounded-3xl p-6 text-center">
+            <div className="mt-8 bg-gradient-to-br from-purple-900/40 to-fuchsia-900/20 border border-fuchsia-500/30 rounded-3xl p-6 text-center shadow-[0_0_40px_rgba(255,0,255,0.1)]">
               <h4 className="text-xl font-bold text-white mb-2">¿Vienes en grupo?</h4>
               <p className="text-zinc-300 text-sm mb-4">Aprovecha los combos grupales para 10, 15 o 20 personas con manillas gratis y mesas incluidas.</p>
               <a 
                 href={meta.contactoMesasYCombos.enlace}
                 target="_blank" rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-3 px-8 rounded-full transition-colors w-full sm:w-auto shadow-[0_0_20px_rgba(217,70,239,0.5)]"
               >
                 Reservar Mesa / Combo
               </a>

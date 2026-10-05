@@ -15,9 +15,11 @@ interface EventCardProps {
 
 export function EventCard({ titulo, fecha, horaInicio, ubicacion, descripcion, isCenter }: EventCardProps) {
   // Format Date: "2026-10-08" -> "08 OCT"
-  const dateObj = new Date(fecha);
-  const day = dateObj.getUTCDate().toString().padStart(2, '0');
-  const month = dateObj.toLocaleString('es-ES', { month: 'short' }).toUpperCase();
+  const dateParts = (fecha || "").split('T')[0].split('-');
+  const day = dateParts[2] ? dateParts[2].padStart(2, '0') : "01";
+  const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+  const monthIdx = dateParts[1] ? parseInt(dateParts[1], 10) - 1 : 0;
+  const month = months[monthIdx] || 'ENE';
 
 
   // Image based on category or random

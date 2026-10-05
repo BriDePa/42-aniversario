@@ -1,0 +1,1 @@
+ALTER TABLE eventos ADD COLUMN IF NOT EXISTS ubicacion_url TEXT;

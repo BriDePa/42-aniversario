@@ -8,6 +8,7 @@ export interface EventItem {
   horaInicio: string;
   horaFin: string | null;
   ubicacion: string;
+  ubicacion_url?: string | null;
   comision: string;
   esConvocatoria: boolean;
   descripcion: string;

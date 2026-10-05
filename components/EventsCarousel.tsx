@@ -3,16 +3,16 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EventCard } from "./EventCard";
-import { EVENTOS_ANIVERSARIO, EventItem } from "@/lib/eventsData";
+import { EventItem } from "@/lib/eventsData";
 import { EventModal } from "./EventModal";
 
-export function EventsCarousel() {
+export function EventsCarousel({ events = [] }: { events?: EventItem[] }) {
   const [activeIndex, setActiveIndex] = useState(2); // Start with a middle card highlighted
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Show a subset of events for the featured carousel
-  const featuredEvents = EVENTOS_ANIVERSARIO.slice(0, 8);
+  const featuredEvents = events.slice(0, 8);
 
   const scrollLeft = () => {
     if (activeIndex > 0) {

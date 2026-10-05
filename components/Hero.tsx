@@ -16,6 +16,7 @@ export function Hero() {
           centerVignette={true}
           outerVignette={true}
           smooth={true}
+          characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789"
         />
         {/* Overlay / Vignette */}
         <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-[#0B0813] via-transparent to-[#0B0813]/80 pointer-events-none"></div>
@@ -29,9 +30,9 @@ export function Hero() {
             text="42 Años"
             className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight"
             delay={50}
-            animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
-            animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
-            easing="easeOutCubic"
+            from={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
+            to={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
+            ease="power3.out"
             threshold={0.2}
             rootMargin="-50px"
           />

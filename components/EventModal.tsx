@@ -146,7 +146,13 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
                 <MapPin className="text-fuchsia-400 shrink-0" size={18} />
                 <div className="text-xs">
                   <span className="block text-zinc-500 mb-0.5">Ubicación</span>
-                  <span className="font-semibold line-clamp-1" title={event.ubicacion}>{event.ubicacion}</span>
+                  {event.ubicacion_url ? (
+                    <a href={event.ubicacion_url} target="_blank" rel="noreferrer" className="font-semibold line-clamp-1 hover:text-fuchsia-400 transition-colors underline decoration-fuchsia-500/30 underline-offset-2" title={event.ubicacion}>
+                      {event.ubicacion}
+                    </a>
+                  ) : (
+                    <span className="font-semibold line-clamp-1" title={event.ubicacion}>{event.ubicacion}</span>
+                  )}
                 </div>
               </div>
             </div>
