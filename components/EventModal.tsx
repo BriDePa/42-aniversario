@@ -190,6 +190,8 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
             })()}
 
             <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+              {(event as any).convocatoria_descripcion || event.descripcion}
+            </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="flex items-center gap-3 text-zinc-300 bg-white/5 p-3 rounded-xl border border-white/5">

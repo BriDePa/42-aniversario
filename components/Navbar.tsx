@@ -30,12 +30,13 @@ export function Navbar() {
           <a href={whatsappLink} target="_blank" rel="noreferrer" className="hover:text-fuchsia-400 transition-colors">Contacto</a>
         </div>
 
-        {/* Actions */}
+        {/* Actions - Hidden por petición del usuario
         <div className="hidden md:flex items-center gap-4">
           <a href="/admin" className="text-sm font-bold text-white px-5 py-2 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/20 hover:bg-fuchsia-500/40 transition-colors">
             Administrar
           </a>
         </div>
+        */}
 
         {/* Mobile Menu Toggle */}
         <button 
@@ -54,9 +55,9 @@ export function Navbar() {
           <a href="/fiesta" onClick={() => setIsOpen(false)} className="text-fuchsia-400 font-bold text-lg">Fiesta Alcohoritmo</a>
           <a href={whatsappLink} target="_blank" rel="noreferrer" onClick={() => setIsOpen(false)} className="text-zinc-300 text-lg">Contacto Oficial</a>
           <div className="h-px bg-white/10 my-2" />
-          <a href="/admin" className="w-full block text-center text-white px-5 py-3 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/20 font-bold">
+          {/* <a href="/admin" className="w-full block text-center text-white px-5 py-3 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/20 font-bold">
             Administrar
-          </a>
+          </a> */}
         </div>
       )}
     </nav>
