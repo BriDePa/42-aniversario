@@ -9,7 +9,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
 
   // Filter convocatorias: esConvocatoria === true OR rawAvisos has files
-  const convocatorias = events.filter((event) => {
+  const allConvocatoriasFiltered = events.filter((event) => {
     // Check expiration if it has one
     if (event.fecha_expiracion) {
       const expirationDate = new Date(event.fecha_expiracion);
@@ -32,6 +32,8 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
     if (!b.fecha_expiracion) return -1;
     return new Date(a.fecha_expiracion).getTime() - new Date(b.fecha_expiracion).getTime();
   });
+
+  const convocatorias = Array.from(new Map(allConvocatoriasFiltered.map(c => [c.evento_id || c.id, c])).values());
 
   if (convocatorias.length === 0) return null;
 

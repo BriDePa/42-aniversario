@@ -1,5 +1,6 @@
 export interface EventItem {
   id: string;
+  evento_id?: string;
   titulo: string;
   tituloOriginalNotion: string;
   categoria: string;

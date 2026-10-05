@@ -86,6 +86,7 @@ export default async function Home() {
 
       return {
         id: sesion ? `${ev.id}-${sesion.id}` : ev.id,
+        evento_id: ev.id,
         titulo: tituloConDetalle,
         tituloOriginalNotion: ev.titulo,
         categoria: ev.categoria || "General",

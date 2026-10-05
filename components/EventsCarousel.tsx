@@ -11,8 +11,9 @@ export function EventsCarousel({ events = [] }: { events?: EventItem[] }) {
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Show a subset of events for the featured carousel
-  const featuredEvents = events.slice(0, 8);
+  // Show a subset of unique events for the featured carousel
+  const uniqueEvents = Array.from(new Map((events || []).map(e => [e.evento_id || e.id, e])).values());
+  const featuredEvents = uniqueEvents.slice(0, 8);
 
   const scrollLeft = () => {
     if (activeIndex > 0) {
