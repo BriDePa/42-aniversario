@@ -41,11 +41,15 @@ export async function saveEvent(formData: FormData) {
   
   const fecha_inicio = formData.get('fecha_inicio') as string
   const fecha_fin = formData.get('fecha_fin') as string | null
-  const fecha_expiracion = formData.get('fecha_expiracion') as string | null
-  const comision = formData.get('comision') as string | null
+  let fecha_expiracion = formData.get('fecha_expiracion') as string | null
+  if (fecha_expiracion && !fecha_expiracion.includes('+') && !fecha_expiracion.includes('-04:00')) {
+    fecha_expiracion = fecha_expiracion + '-04:00'
+  }
   const whatsapp_mensaje = formData.get('whatsapp_mensaje') as string | null
   const ubicacion_url = formData.get('ubicacion_url') as string | null
   const es_convocatoria = formData.get('es_convocatoria') === 'true'
+  const bases_url = formData.get('bases_url') as string | null
+  const convocatoria_descripcion = formData.get('convocatoria_descripcion') as string | null
   
   const sesionesStr = formData.get('sesiones') as string
   const sesiones = sesionesStr ? JSON.parse(sesionesStr) : []
@@ -62,9 +66,12 @@ export async function saveEvent(formData: FormData) {
   if (imagen && imagen.size > 0) {
     const fileExt = imagen.name.split('.').pop()
     const fileName = `${Math.random()}.${fileExt}`
+    const buffer = Buffer.from(await imagen.arrayBuffer())
     const { data, error } = await supabase.storage
-      .from('imagenes_eventos')
-      .upload(`eventos/${fileName}`, imagen)
+      .from('imagenes_evento')
+      .upload(`eventos/${fileName}`, buffer, {
+        contentType: imagen.type,
+      })
       
     if (error) {
       console.error("Error uploading image:", error)
@@ -72,7 +79,7 @@ export async function saveEvent(formData: FormData) {
     }
     
     const { data: publicUrlData } = supabase.storage
-      .from('imagenes_eventos')
+      .from('imagenes_evento')
       .getPublicUrl(`eventos/${fileName}`)
       
     imagen_url = publicUrlData.publicUrl
@@ -84,9 +91,12 @@ export async function saveEvent(formData: FormData) {
   if (banner && banner.size > 0) {
     const fileExt = banner.name.split('.').pop()
     const fileName = `banner_${Math.random()}.${fileExt}`
+    const buffer = Buffer.from(await banner.arrayBuffer())
     const { data, error } = await supabase.storage
-      .from('imagenes_eventos')
-      .upload(`eventos/${fileName}`, banner)
+      .from('imagenes_evento')
+      .upload(`eventos/${fileName}`, buffer, {
+        contentType: banner.type,
+      })
       
     if (error) {
       console.error("Error uploading banner:", error)
@@ -94,7 +104,7 @@ export async function saveEvent(formData: FormData) {
     }
     
     const { data: publicUrlData } = supabase.storage
-      .from('imagenes_eventos')
+      .from('imagenes_evento')
       .getPublicUrl(`eventos/${fileName}`)
       
     banner_url = publicUrlData.publicUrl
@@ -112,9 +122,10 @@ export async function saveEvent(formData: FormData) {
     fecha_inicio,
     fecha_fin,
     fecha_expiracion,
-    comision,
     whatsapp_mensaje,
-    es_convocatoria
+    es_convocatoria,
+    bases_url,
+    convocatoria_descripcion
   }
 
   if (imagen_url) {
@@ -158,7 +169,8 @@ export async function saveEvent(formData: FormData) {
         fecha: s.fecha,
         hora_inicio: s.hora_inicio,
         hora_fin: s.hora_fin,
-        detalle: s.detalle || null
+        detalle: s.detalle || null,
+        telefono_referencia: s.telefono_referencia || null
       }))
       const result = await supabase.from('sesiones').insert(sesionesToInsert)
       if (result.error) console.error("Error inserting sessions:", result.error)

@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { logout } from './actions'
-import AdminEventsTable from './components/AdminEventsTable'
+import AdminDashboardClient from './components/AdminDashboardClient'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
@@ -27,7 +27,7 @@ export default async function AdminDashboard() {
   let eventos = allEventos || []
 
   // Role-Based Access Control (RBAC)
-  const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || 'deymar@admin.com';
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || 'deymarbrian02@gmail.com';
   if (user.email !== superAdminEmail) {
     eventos = eventos.filter((evento: any) =>
       evento.encargados?.some((encargado: any) => encargado.email === user.email)
@@ -35,9 +35,9 @@ export default async function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-8">
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="flex justify-between items-center mb-12">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
               Panel de Administración
@@ -54,7 +54,7 @@ export default async function AdminDashboard() {
           </form>
         </header>
 
-        <AdminEventsTable eventos={eventos || []} error={error ? error.message : null} />
+        <AdminDashboardClient eventos={eventos || []} error={error ? error.message : null} userEmail={user.email || ''} />
       </div>
     </div>
   )

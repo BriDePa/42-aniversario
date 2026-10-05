@@ -23,6 +23,8 @@ export default async function Home() {
     banner_url,
     es_convocatoria,
     fecha_expiracion,
+    bases_url,
+    convocatoria_descripcion,
     fecha_inicio,
     ubicacion,
     ubicacion_url,
@@ -33,13 +35,20 @@ export default async function Home() {
       fecha,
       hora_inicio,
       hora_fin,
-      detalle
+      detalle,
+      telefono_referencia
     ),
     avisos (
       id,
       titulo,
       url_archivo,
       descripcion
+    ),
+    encargados (
+      nombre,
+      rol,
+      telefono,
+      email
     )
   `);
     
@@ -81,9 +90,11 @@ export default async function Home() {
         fecha_expiracion: ev.fecha_expiracion,
         banner_url: ev.banner_url,
         descripcion: ev.descripcion || "",
-        basesUrl: ev.avisos?.[0]?.url_archivo || null,
+        convocatoria_descripcion: ev.convocatoria_descripcion || null,
+        basesUrl: ev.bases_url || ev.avisos?.[0]?.url_archivo || null,
         imagenUrl: ev.imagen_url,
-        encargados: [],
+        encargados: ev.encargados || [],
+        telefonoReferencia: sesion?.telefono_referencia || null,
         whatsappMensajeSugerido: ev.whatsapp_mensaje || `Hola, tengo una duda sobre ${ev.titulo}`,
         rawAvisos: ev.avisos,
       } as any;

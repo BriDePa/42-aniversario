@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, useState, useTransition, useRef } from "react"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Plus, Trash2, X, Image as ImageIcon } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Dialog,
   DialogContent,
@@ -42,16 +43,18 @@ const eventSchema = z.object({
   descripcion: z.string().optional(),
   fecha_inicio: z.string().min(1, "Fecha de inicio requerida"),
   fecha_fin: z.string().optional(),
-  comision: z.string().optional(),
   whatsapp_mensaje: z.string().optional(),
   es_convocatoria: z.boolean().optional(),
   fecha_expiracion: z.string().optional(),
+  bases_url: z.string().optional(),
+  convocatoria_descripcion: z.string().optional(),
   sesiones: z.array(z.object({
     id: z.string().optional(),
     fecha: z.string().min(1, "Fecha es requerida"),
     hora_inicio: z.string().min(1, "Hora inicio requerida"),
     hora_fin: z.string().min(1, "Hora fin requerida"),
     detalle: z.string().optional(),
+    telefono_referencia: z.string().optional(),
   })).optional(),
   encargados: z.array(z.object({
     id: z.string().optional(),
@@ -83,9 +86,10 @@ type Evento = {
   fecha_inicio?: string | null
   fecha_fin?: string | null
   fecha_expiracion?: string | null
-  comision?: string | null
   whatsapp_mensaje?: string | null
   es_convocatoria?: boolean
+  bases_url?: string | null
+  convocatoria_descripcion?: string | null
   sesiones?: any[]
   encargados?: any[]
   avisos?: any[]
@@ -95,10 +99,16 @@ export function EventEditorModal({
   isOpen,
   onClose,
   event,
+  userEmail,
+  defaultAccordion,
+  defaultTab,
 }: {
   isOpen: boolean
   onClose: () => void
   event: Evento | null
+  userEmail: string
+  defaultAccordion?: string
+  defaultTab?: string
 }) {
   const isEditing = !!event
   const [isPending, startTransition] = useTransition()
@@ -111,6 +121,20 @@ export function EventEditorModal({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const bannerInputRef = useRef<HTMLInputElement>(null)
 
+  // RBAC LOGIC
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || 'deymarbrian02@gmail.com';
+  const isSuperAdmin = userEmail === superAdminEmail;
+  
+  let userRole = null;
+  if (event && !isSuperAdmin) {
+    const encargado = event.encargados?.find(e => e.email === userEmail);
+    if (encargado) {
+      userRole = encargado.rol;
+    }
+  }
+
+  const canEditMainFields = isSuperAdmin || userRole === 'Organizador';
+  
   const {
     register,
     control,
@@ -130,9 +154,10 @@ export function EventEditorModal({
       descripcion: "",
       fecha_inicio: "",
       fecha_fin: "",
-      comision: "",
       whatsapp_mensaje: "",
       es_convocatoria: false,
+      bases_url: "",
+      convocatoria_descripcion: "",
       sesiones: [],
       encargados: [],
       avisos: [],
@@ -168,15 +193,17 @@ export function EventEditorModal({
         fecha_inicio: event.fecha_inicio ? new Date(event.fecha_inicio).toISOString().split('T')[0] : "",
         fecha_fin: event.fecha_fin ? new Date(event.fecha_fin).toISOString().split('T')[0] : "",
         fecha_expiracion: event.fecha_expiracion ? new Date(event.fecha_expiracion).toISOString().slice(0, 16) : "",
-        comision: event.comision || "",
         whatsapp_mensaje: event.whatsapp_mensaje || "",
         es_convocatoria: !!event.es_convocatoria,
+        bases_url: event.bases_url || "",
+        convocatoria_descripcion: event.convocatoria_descripcion || "",
         sesiones: event.sesiones?.map(s => ({
           id: s.id,
           fecha: s.fecha,
           hora_inicio: s.hora_inicio,
           hora_fin: s.hora_fin,
           detalle: s.detalle || "",
+          telefono_referencia: s.telefono_referencia || "",
         })) || [],
         encargados: event.encargados?.map(e => ({
           id: e.id,
@@ -206,9 +233,10 @@ export function EventEditorModal({
         fecha_inicio: "",
         fecha_fin: "",
         fecha_expiracion: "",
-        comision: "",
         whatsapp_mensaje: "",
         es_convocatoria: false,
+        bases_url: "",
+        convocatoria_descripcion: "",
         sesiones: [],
         encargados: [],
         avisos: [],
@@ -219,7 +247,7 @@ export function EventEditorModal({
     setImageFile(null)
     setBannerFile(null)
     setErrorMsg(null)
-  }, [event, isOpen, reset])
+  }, [event, isOpen, reset, defaultAccordion, defaultTab])
 
   const onSubmit = (data: EventFormValues) => {
     setErrorMsg(null)
@@ -236,9 +264,10 @@ export function EventEditorModal({
       formData.append("fecha_inicio", data.fecha_inicio)
       if (data.fecha_fin) formData.append("fecha_fin", data.fecha_fin)
       if (data.fecha_expiracion) formData.append("fecha_expiracion", data.fecha_expiracion)
-      if (data.comision) formData.append("comision", data.comision)
       if (data.whatsapp_mensaje) formData.append("whatsapp_mensaje", data.whatsapp_mensaje)
       formData.append("es_convocatoria", (!!data.es_convocatoria).toString())
+      if (data.bases_url) formData.append("bases_url", data.bases_url)
+      if (data.convocatoria_descripcion) formData.append("convocatoria_descripcion", data.convocatoria_descripcion)
       
       formData.append("sesiones", JSON.stringify(data.sesiones || []))
       formData.append("encargados", JSON.stringify(data.encargados || []))
@@ -315,7 +344,7 @@ export function EventEditorModal({
             </div>
           )}
 
-          <Accordion className="w-full space-y-4">
+          <Accordion key={defaultAccordion || "info-basica"} defaultValue={[defaultAccordion || "info-basica"]} className="w-full space-y-4">
             
             {/* INFORMACION BASICA */}
             <AccordionItem value="info-basica" className="border-white/10 border bg-white/5 rounded-xl px-4 overflow-hidden">
@@ -325,33 +354,33 @@ export function EventEditorModal({
               <AccordionContent className="space-y-4 pb-4">
                 <div className="space-y-2">
                   <Label htmlFor="titulo" className="text-zinc-300">Título</Label>
-                  <Input id="titulo" {...register("titulo")} className="bg-black/20 border-white/10 text-white focus:border-cyan-500" />
+                  <Input id="titulo" {...register("titulo")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
                   {errors.titulo && <p className="text-red-400 text-xs">{errors.titulo.message}</p>}
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="slug" className="text-zinc-300">Slug</Label>
-                  <Input id="slug" {...register("slug")} className="bg-black/20 border-white/10 text-white focus:border-cyan-500" />
+                  <Input id="slug" {...register("slug")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
                   {errors.slug && <p className="text-red-400 text-xs">{errors.slug.message}</p>}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="categoria" className="text-zinc-300">Categoría</Label>
-                    <Input id="categoria" {...register("categoria")} className="bg-black/20 border-white/10 text-white focus:border-cyan-500" />
+                    <Input id="categoria" {...register("categoria")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
                     {errors.categoria && <p className="text-red-400 text-xs">{errors.categoria.message}</p>}
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="ubicacion" className="text-zinc-300">Ubicación</Label>
-                    <Input id="ubicacion" {...register("ubicacion")} className="bg-black/20 border-white/10 text-white focus:border-cyan-500" />
+                    <Input id="ubicacion" {...register("ubicacion")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
                     {errors.ubicacion && <p className="text-red-400 text-xs">{errors.ubicacion.message}</p>}
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="ubicacion_url" className="text-zinc-300">Link Ubicación (Opcional)</Label>
-                  <Input id="ubicacion_url" type="url" {...register("ubicacion_url")} className="bg-black/20 border-white/10 text-white focus:border-cyan-500" />
+                  <Input id="ubicacion_url" type="url" {...register("ubicacion_url")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white focus:border-cyan-500 disabled:opacity-50" />
                   {errors.ubicacion_url && <p className="text-red-400 text-xs">{errors.ubicacion_url.message}</p>}
                 </div>
 
@@ -370,21 +399,6 @@ export function EventEditorModal({
                 </div>
                 
                 <div className="space-y-2">
-                  <Label className="text-zinc-300">Comisión</Label>
-                  <Select onValueChange={(val) => setValue("comision", val || undefined)} defaultValue={watch("comision") || ""}>
-                    <SelectTrigger className="bg-black/20 border-white/10 text-white focus:ring-cyan-500">
-                      <SelectValue placeholder="Selecciona una comisión" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#0B0813] border-white/10 text-white">
-                      <SelectItem value="Logística">Logística</SelectItem>
-                      <SelectItem value="Difusión">Difusión</SelectItem>
-                      <SelectItem value="Técnica">Técnica</SelectItem>
-                      <SelectItem value="Ninguna">Ninguna</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
                   <Label htmlFor="descripcion" className="text-zinc-300">Descripción</Label>
                   <Textarea id="descripcion" {...register("descripcion")} className="bg-black/20 border-white/10 text-white min-h-[100px] focus:border-cyan-500" />
                   {errors.descripcion && <p className="text-red-400 text-xs">{errors.descripcion.message}</p>}
@@ -400,18 +414,20 @@ export function EventEditorModal({
               <AccordionContent className="space-y-4 pb-4">
                 <div className="space-y-2">
                   <Label className="text-zinc-300">Imagen del Evento</Label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/20 hover:bg-black/30 transition-colors relative group">
+                  <div className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/20 transition-colors relative group ${!canEditMainFields ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black/30'}`}>
                     {imagePreview ? (
                       <div className="relative w-full aspect-video rounded-lg overflow-hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={imagePreview} alt="Preview" className="object-cover w-full h-full" />
-                        <button
-                          type="button"
-                          onClick={removeImage}
-                          className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
+                        {canEditMainFields && (
+                          <button
+                            type="button"
+                            onClick={removeImage}
+                            className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <div className="space-y-1 text-center">
@@ -419,10 +435,10 @@ export function EventEditorModal({
                         <div className="flex text-sm text-zinc-400 justify-center">
                           <label
                             htmlFor="file-upload"
-                            className="relative cursor-pointer rounded-md font-medium text-purple-400 hover:text-purple-300 bg-transparent"
+                            className={`relative rounded-md font-medium bg-transparent ${canEditMainFields ? 'cursor-pointer text-purple-400 hover:text-purple-300' : 'cursor-not-allowed text-zinc-500'}`}
                           >
                             <span>Sube un archivo</span>
-                            <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
+                            <input id="file-upload" disabled={!canEditMainFields} name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
                           </label>
                           <p className="pl-1">o arrastra y suelta</p>
                         </div>
@@ -434,7 +450,7 @@ export function EventEditorModal({
 
                 <div className="space-y-2">
                   <Label htmlFor="whatsapp_mensaje" className="text-zinc-300">Mensaje de WhatsApp Predefinido</Label>
-                  <Textarea id="whatsapp_mensaje" {...register("whatsapp_mensaje")} className="bg-black/20 border-white/10 text-white min-h-[80px] focus:border-cyan-500" />
+                  <Textarea id="whatsapp_mensaje" {...register("whatsapp_mensaje")} disabled={!canEditMainFields} className="bg-black/20 border-white/10 text-white min-h-[80px] focus:border-cyan-500 disabled:opacity-50" />
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -445,12 +461,14 @@ export function EventEditorModal({
                 Sesiones
               </AccordionTrigger>
               <AccordionContent className="space-y-4 pb-4">
-                <div className="flex justify-end">
-                  <Button type="button" variant="outline" size="sm" onClick={() => appendSesion({ fecha: "", hora_inicio: "", hora_fin: "", detalle: "" })} className="bg-purple-500/20 border-purple-500/50 text-purple-300 hover:bg-purple-500/30">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Añadir Sesión
-                  </Button>
-                </div>
+                {canEditMainFields && (
+                  <div className="flex justify-end">
+                    <Button type="button" variant="outline" size="sm" onClick={() => appendSesion({ fecha: "", hora_inicio: "", hora_fin: "", detalle: "", telefono_referencia: "" })} className="bg-purple-500/20 border-purple-500/50 text-purple-300 hover:bg-purple-500/30">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Añadir Sesión
+                    </Button>
+                  </div>
+                )}
                 
                 <div className="space-y-4">
                   {sesionesFields.map((field, index) => (
@@ -465,20 +483,26 @@ export function EventEditorModal({
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Fecha</Label>
-                          <Input type="date" {...register(`sesiones.${index}.fecha` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input type="date" {...register(`sesiones.${index}.fecha` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Hora Inicio</Label>
-                          <Input type="time" {...register(`sesiones.${index}.hora_inicio` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input type="time" {...register(`sesiones.${index}.hora_inicio` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Hora Fin</Label>
-                          <Input type="time" {...register(`sesiones.${index}.hora_fin` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input type="time" {...register(`sesiones.${index}.hora_fin` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                       </div>
-                      <div className="space-y-1.5">
-                        <Label className="text-xs text-zinc-400">Detalle (Opcional)</Label>
-                        <Input placeholder="Ej. Charla principal..." {...register(`sesiones.${index}.detalle` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-zinc-400">Detalle (Opcional)</Label>
+                          <Input placeholder="Ej. Charla principal..." {...register(`sesiones.${index}.detalle` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-zinc-400">Nro Whatsapp (Opcional)</Label>
+                          <Input placeholder="Ej. 79100835" {...register(`sesiones.${index}.telefono_referencia` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -497,41 +521,59 @@ export function EventEditorModal({
                 Encargados
               </AccordionTrigger>
               <AccordionContent className="space-y-4 pb-4">
-                <div className="flex justify-end">
-                  <Button type="button" variant="outline" size="sm" onClick={() => appendEncargado({ nombre: "", telefono: "", rol: "", email: "" })} className="bg-cyan-500/20 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Añadir Encargado
-                  </Button>
-                </div>
+                {canEditMainFields && (
+                  <div className="flex justify-end">
+                    <Button type="button" variant="outline" size="sm" onClick={() => appendEncargado({ nombre: "", telefono: "", rol: "", email: "" })} className="bg-cyan-500/20 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Añadir Encargado
+                    </Button>
+                  </div>
+                )}
                 
                 <div className="space-y-4">
                   {encargadosFields.map((field, index) => (
                     <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
                       <div className="flex justify-between items-center">
                         <h4 className="text-sm font-medium text-zinc-400">Encargado {index + 1}</h4>
-                        <Button type="button" variant="ghost" size="icon" onClick={() => removeEncargado(index)} className="h-6 w-6 text-zinc-500 hover:text-red-400 hover:bg-red-400/10">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        {canEditMainFields && (
+                          <Button type="button" variant="ghost" size="icon" onClick={() => removeEncargado(index)} className="h-6 w-6 text-zinc-500 hover:text-red-400 hover:bg-red-400/10">
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
                       </div>
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Nombre</Label>
-                          <Input {...register(`encargados.${index}.nombre` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input {...register(`encargados.${index}.nombre` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Teléfono</Label>
-                          <Input {...register(`encargados.${index}.telefono` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input {...register(`encargados.${index}.telefono` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Rol</Label>
-                          <Input placeholder="Ej. Organizador, Moderador..." {...register(`encargados.${index}.rol` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Controller
+                            control={control}
+                            name={`encargados.${index}.rol` as const}
+                            render={({ field }) => (
+                              <Select disabled={!canEditMainFields} onValueChange={field.onChange} value={field.value || ""}>
+                                <SelectTrigger className="bg-black/40 border-white/10 h-8 text-sm focus:ring-cyan-500 text-white disabled:opacity-50">
+                                  <SelectValue placeholder="Selecciona un rol" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-[#0f0a1a] border-white/10 text-white">
+                                  <SelectItem value="Organizador">Organizador</SelectItem>
+                                  <SelectItem value="Publicador">Publicador</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            )}
+                          />
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-xs text-zinc-400">Email (Acceso)</Label>
-                          <Input type="email" placeholder="Para RBAC..." {...register(`encargados.${index}.email` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          <Input type="email" placeholder="Para RBAC..." {...register(`encargados.${index}.email` as const)} disabled={!canEditMainFields} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500 disabled:opacity-50" />
                         </div>
                       </div>
                     </div>
@@ -550,96 +592,129 @@ export function EventEditorModal({
               <AccordionTrigger className="text-zinc-300 hover:text-white hover:no-underline font-semibold py-4">
                 Avisos & Convocatorias
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pb-4">
-                <div className="flex items-center space-x-2 py-2">
-                  <Switch 
-                    id="es_convocatoria" 
-                    checked={watch("es_convocatoria")} 
-                    onCheckedChange={(val) => setValue("es_convocatoria", val)}
-                  />
-                  <Label htmlFor="es_convocatoria" className="text-zinc-300">Destacar en "Convocatorias y Avisos" (Página Principal)</Label>
-                </div>
+              <AccordionContent className="pb-4">
+                <Tabs key={defaultTab || (event?.es_convocatoria ? "convocatoria" : "aviso")} defaultValue={defaultTab || (event?.es_convocatoria ? "convocatoria" : "aviso")} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-6 bg-black/40 border border-white/10 rounded-xl p-1">
+                    <TabsTrigger value="aviso" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-300 rounded-lg">
+                      Publicar Aviso (Sin imagen)
+                    </TabsTrigger>
+                    <TabsTrigger value="convocatoria" className="data-[state=active]:bg-fuchsia-500/20 data-[state=active]:text-fuchsia-300 rounded-lg">
+                      Convocatoria (Con imagen)
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="aviso" className="space-y-4 mt-0">
+                    <div className="flex justify-between items-center bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg mb-4">
+                      <p className="text-xs text-blue-300">Los avisos son notas adicionales. No tienen imagen.</p>
+                      <Button type="button" variant="outline" size="sm" onClick={() => appendAviso({ titulo: "", url_archivo: "", descripcion: "" })} className="bg-blue-500/20 border-blue-500/50 text-blue-300 hover:bg-blue-500/30 whitespace-nowrap">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Añadir Aviso
+                      </Button>
+                    </div>
 
-                {watch("es_convocatoria") && (
-                  <div className="p-4 rounded-xl bg-black/20 border border-fuchsia-500/20 space-y-4 mb-4">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs text-fuchsia-400 font-semibold">Expiración (Cuándo dejará de mostrarse en el carrusel principal)</Label>
-                      <Input type="datetime-local" {...register("fecha_expiracion")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label className="text-xs text-fuchsia-400 font-semibold">Fotografía para el Aviso (Opcional, si no se usa la principal)</Label>
-                      <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/40 hover:bg-black/60 transition-colors relative group">
-                        {bannerPreview ? (
-                          <div className="relative w-full aspect-[21/9] sm:aspect-video rounded-lg overflow-hidden">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={bannerPreview} alt="Banner Preview" className="object-cover w-full h-full" />
-                            <button
-                              type="button"
-                              onClick={removeBanner}
-                              className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
+                    <div className="space-y-4">
+                      {avisosFields.map((field, index) => (
+                        <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
+                          <div className="flex justify-between items-center">
+                            <h4 className="text-sm font-medium text-zinc-400">Aviso {index + 1}</h4>
+                            <Button type="button" variant="ghost" size="icon" onClick={() => removeAviso(index)} className="h-6 w-6 text-zinc-500 hover:text-red-400 hover:bg-red-400/10">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
-                        ) : (
-                          <div className="space-y-1 text-center">
-                            <ImageIcon className="mx-auto h-8 w-8 text-zinc-500 group-hover:text-fuchsia-400 transition-colors" />
-                            <div className="flex text-xs text-zinc-400 justify-center">
-                              <label
-                                htmlFor="banner-upload"
-                                className="relative cursor-pointer rounded-md font-medium text-fuchsia-400 hover:text-fuchsia-300 bg-transparent"
-                              >
-                                <span>Sube un archivo</span>
-                                <input id="banner-upload" name="banner-upload" type="file" className="sr-only" accept="image/*" onChange={handleBannerChange} ref={bannerInputRef} />
-                              </label>
-                              <p className="pl-1">o arrastra y suelta</p>
-                            </div>
-                            <p className="text-[10px] text-zinc-500">PNG, JPG hasta 5MB (Recomendado apaisado)</p>
+                          
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-zinc-400">Título</Label>
+                            <Input {...register(`avisos.${index}.titulo` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
                           </div>
-                        )}
-                      </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-zinc-400">URL Archivo / Enlace</Label>
+                            <Input type="url" {...register(`avisos.${index}.url_archivo` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-xs text-zinc-400">Descripción</Label>
+                            <Textarea {...register(`avisos.${index}.descripcion` as const)} className="bg-black/40 border-white/10 min-h-[60px] text-sm focus:border-cyan-500" />
+                          </div>
+                        </div>
+                      ))}
+                      {avisosFields.length === 0 && (
+                        <div className="text-center py-6 text-zinc-500 text-sm border border-dashed border-white/10 rounded-xl">
+                          No hay avisos para este evento.
+                        </div>
+                      )}
                     </div>
-                  </div>
-                )}
-                
-                <div className="flex justify-end border-t border-white/10 pt-4 mt-2">
-                  <Button type="button" variant="outline" size="sm" onClick={() => appendAviso({ titulo: "", url_archivo: "", descripcion: "" })} className="bg-blue-500/20 border-blue-500/50 text-blue-300 hover:bg-blue-500/30">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Añadir Aviso
-                  </Button>
-                </div>
-                
-                <div className="space-y-4">
-                  {avisosFields.map((field, index) => (
-                    <div key={field.id} className="p-4 rounded-xl bg-black/20 border border-white/10 space-y-3 relative">
-                      <div className="flex justify-between items-center">
-                        <h4 className="text-sm font-medium text-zinc-400">Aviso {index + 1}</h4>
-                        <Button type="button" variant="ghost" size="icon" onClick={() => removeAviso(index)} className="h-6 w-6 text-zinc-500 hover:text-red-400 hover:bg-red-400/10">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                  </TabsContent>
+
+                  <TabsContent value="convocatoria" className="space-y-4 mt-0">
+                    <div className="bg-fuchsia-500/10 border border-fuchsia-500/20 p-4 rounded-xl space-y-4">
+                      <div className="flex items-center space-x-2 py-1">
+                        <Switch 
+                          id="es_convocatoria" 
+                          checked={watch("es_convocatoria")} 
+                          onCheckedChange={(val) => setValue("es_convocatoria", val)}
+                        />
+                        <Label htmlFor="es_convocatoria" className="text-fuchsia-300 font-semibold cursor-pointer">
+                          Habilitar como Convocatoria Principal
+                        </Label>
                       </div>
-                      
-                      <div className="space-y-1.5">
-                        <Label className="text-xs text-zinc-400">Título</Label>
-                        <Input {...register(`avisos.${index}.titulo` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label className="text-xs text-zinc-400">URL Archivo / Enlace</Label>
-                        <Input type="url" {...register(`avisos.${index}.url_archivo` as const)} className="bg-black/40 border-white/10 h-8 text-sm focus:border-cyan-500" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label className="text-xs text-zinc-400">Descripción</Label>
-                        <Textarea {...register(`avisos.${index}.descripcion` as const)} className="bg-black/40 border-white/10 min-h-[60px] text-sm focus:border-cyan-500" />
-                      </div>
+                      <p className="text-xs text-fuchsia-200/70 ml-11">
+                        Una convocatoria destacará este evento con su propia imagen, expiración, y diseño de publicación completo.
+                      </p>
                     </div>
-                  ))}
-                  {avisosFields.length === 0 && (
-                    <div className="text-center py-6 text-zinc-500 text-sm border border-dashed border-white/10 rounded-xl">
-                      No hay avisos para este evento.
-                    </div>
-                  )}
-                </div>
+
+                    {watch("es_convocatoria") && (
+                      <div className="p-4 rounded-xl bg-black/20 border border-fuchsia-500/20 space-y-4">
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Expiración</Label>
+                          <Input type="datetime-local" {...register("fecha_expiracion")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Link (Ej. PDF de bases o Drive)</Label>
+                          <Input type="url" placeholder="https://..." {...register("bases_url")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Descripción (Específica para la convocatoria)</Label>
+                          <Textarea {...register("convocatoria_descripcion")} className="bg-black/40 border-white/10 min-h-[60px] text-sm focus:border-fuchsia-500" />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label className="text-xs text-fuchsia-400 font-semibold">Fotografía para la Convocatoria</Label>
+                          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/40 hover:bg-black/60 transition-colors relative group">
+                            {bannerPreview ? (
+                              <div className="relative w-full aspect-[21/9] sm:aspect-video rounded-lg overflow-hidden">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={bannerPreview} alt="Banner Preview" className="object-cover w-full h-full" />
+                                <button
+                                  type="button"
+                                  onClick={removeBanner}
+                                  className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="space-y-1 text-center">
+                                <ImageIcon className="mx-auto h-8 w-8 text-zinc-500 group-hover:text-fuchsia-400 transition-colors" />
+                                <div className="flex text-xs text-zinc-400 justify-center">
+                                  <label
+                                    htmlFor="banner-upload"
+                                    className="relative cursor-pointer rounded-md font-medium text-fuchsia-400 hover:text-fuchsia-300 bg-transparent"
+                                  >
+                                    <span>Sube un archivo</span>
+                                    <input id="banner-upload" name="banner-upload" type="file" className="sr-only" accept="image/*" onChange={handleBannerChange} ref={bannerInputRef} />
+                                  </label>
+                                  <p className="pl-1">o arrastra y suelta</p>
+                                </div>
+                                <p className="text-[10px] text-zinc-500">PNG, JPG hasta 5MB (Recomendado apaisado)</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
               </AccordionContent>
             </AccordionItem>
 

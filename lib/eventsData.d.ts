@@ -17,6 +17,7 @@ export interface EventItem {
   basesUrl: string | null;
   imagenUrl?: string;
   encargados: Array<{ nombre: string; telefono: string | null; rol: string }>;
+  telefonoReferencia?: string;
   whatsappMensajeSugerido: string;
 }
 

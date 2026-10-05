@@ -3,6 +3,7 @@
 import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
 import { Ghost, MapPin, Martini, Ticket, Info, CheckCircle2 } from "lucide-react";
 import BorderGlow from "./BorderGlow";
+import { StaffCarousel } from "./StaffCarousel";
 
 export function PartySection() {
   const party = FIESTA_ALCOHORITMO as any;
@@ -83,6 +84,15 @@ export function PartySection() {
               <p className="text-zinc-500 text-xs leading-relaxed">{party.bonusDobleFiesta.descripcion}</p>
             </div>
           </BorderGlow>
+        </div>
+
+        {/* Staff Section */}
+        <div className="mb-24">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl font-bold text-white mb-4">Adquiere tus Entradas</h3>
+            <p className="text-zinc-400 max-w-xl mx-auto">Contacta a nuestro Staff Autorizado de Venta para adquirir tus manillas o reservar combos. ¡Elige a tu vendedor favorito!</p>
+          </div>
+          <StaffCarousel />
         </div>
 
         {/* Menu & Attractions */}

@@ -76,7 +76,7 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
 
   const whatsappUrl = event.whatsappMensajeSugerido 
     ? buildWhatsAppUrl(
-        event.encargados?.[0]?.telefono || "59160519730", 
+        event.telefonoReferencia || event.encargados?.[0]?.telefono || "60519730", 
         event.whatsappMensajeSugerido
       ) 
     : null;
@@ -130,7 +130,7 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
             )}
 
             <p className="text-zinc-400 text-sm leading-relaxed mb-6">
-              {event.descripcion}
+              {(event as any).convocatoria_descripcion || event.descripcion}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
