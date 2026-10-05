@@ -71,7 +71,13 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
                   <div className="w-full h-full bg-gradient-to-br from-[#1A1528] to-[#0B0813] p-8 flex flex-col items-center justify-center text-center border border-fuchsia-500/20 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-500 to-purple-500"></div>
                     <h3 className="text-xl font-bold text-white mb-4 leading-snug">{ev.titulo}</h3>
-                    <p className="text-sm text-zinc-400 mb-8 line-clamp-5 leading-relaxed">
+                      {ev.fecha_expiracion && (
+                        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                          Expira: {new Date(ev.fecha_expiracion).toLocaleString('es-BO', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      )}
+                      <p className="text-sm text-zinc-400 mb-6 line-clamp-4 leading-relaxed">
                       {ev.convocatoria_descripcion || ev.descripcion}
                     </p>
                     <button 
@@ -96,7 +102,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
 
       {/* Modal */}
       {selectedEvent && (
-        <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} allConvocatorias={convocatorias} />
+        <EventModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
       )}
     </section>
   );

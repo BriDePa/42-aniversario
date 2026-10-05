@@ -57,7 +57,7 @@ function EventCountdown({ targetDate }: { targetDate: string }) {
   );
 }
 
-export function EventModal({ event, onClose, allConvocatorias }: { event: EventItem, onClose: () => void, allConvocatorias?: EventItem[] }) {
+export function EventModal({ event, onClose }: { event: EventItem, onClose: () => void }) {
   // Fix for hydration and React Portal
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -123,33 +123,73 @@ export function EventModal({ event, onClose, allConvocatorias }: { event: EventI
             
             <h2 className="text-2xl font-bold text-white mb-4 leading-tight">{event.titulo}</h2>
             
-            {event.imagenUrl && (!allConvocatorias || allConvocatorias.length === 0) && (
-              <div className="mb-6 rounded-xl overflow-hidden border border-white/10 shadow-lg">
-                <img src={event.imagenUrl} alt={event.titulo} className="w-full h-auto object-cover" />
-              </div>
-            )}
+            
+            {(() => {
+              const galleryImages = [];
+              if (event.imagenUrl) galleryImages.push({ url: event.imagenUrl, title: "Imagen Principal" });
+              if (event.banner_url && event.banner_url !== event.imagenUrl) galleryImages.push({ url: event.banner_url, title: "Banner" });
+              if ((event as any).rawAvisos && Array.isArray((event as any).rawAvisos)) {
+                (event as any).rawAvisos.forEach((aviso: any) => {
+                  if (aviso.url_archivo) galleryImages.push({ url: aviso.url_archivo, title: aviso.titulo || "Aviso" });
+                });
+              }
 
-            {allConvocatorias && allConvocatorias.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-fuchsia-400 font-semibold mb-3 text-sm uppercase tracking-wider">Galería de Convocatorias</h3>
-                <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-4 custom-scrollbar">
-                  {[event, ...allConvocatorias.filter(c => c.id !== event.id)].map(c => (
-                    c.imagenUrl && (
-                      <div key={c.id} className="min-w-[85%] sm:min-w-[70%] shrink-0 snap-center rounded-xl overflow-hidden border border-white/10 shadow-lg relative bg-black/40">
-                        <img src={c.imagenUrl} alt={c.titulo} className="w-full h-auto object-contain max-h-[60vh] mx-auto" />
+              if (galleryImages.length === 0) return null;
+              
+              if (galleryImages.length === 1) {
+                return (
+                  <div className="mb-6 rounded-xl overflow-hidden border border-white/10 shadow-lg">
+                    <img src={galleryImages[0].url} alt={galleryImages[0].title} className="w-full h-auto object-cover" />
+                  </div>
+                );
+              }
+
+              return (
+                <div className="mb-6 relative group">
+                  <h3 className="text-fuchsia-400 font-semibold mb-3 text-sm uppercase tracking-wider">Galería de Imágenes & QRs</h3>
+                  <div 
+                    id="modal-gallery"
+                    className="flex overflow-x-auto gap-4 snap-x snap-mandatory pb-2"
+                    style={{ scrollbarWidth: 'none' }}
+                  >
+                    {galleryImages.map((img, idx) => (
+                      <div key={idx} className="min-w-[100%] shrink-0 snap-center rounded-xl overflow-hidden border border-white/10 shadow-lg relative bg-black/40">
+                        <img src={img.url} alt={img.title} className="w-full h-auto object-contain max-h-[60vh] mx-auto" />
                         <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-md p-3 text-center text-sm font-semibold text-white">
-                          {c.titulo}
+                          {img.title}
                         </div>
                       </div>
-                    )
-                  ))}
+                    ))}
+                  </div>
+                  {/* Custom Navigation Buttons */}
+                  <button 
+                    onClick={() => {
+                      const el = document.getElementById('modal-gallery');
+                      if (el) el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
+                    }}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const el = document.getElementById('modal-gallery');
+                      if (el) el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </button>
+                  <div className="flex justify-center mt-3 gap-1">
+                    {galleryImages.map((_, idx) => (
+                      <div key={idx} className="w-2 h-2 rounded-full bg-white/20"></div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             <p className="text-zinc-400 text-sm leading-relaxed mb-6">
-              {(event as any).convocatoria_descripcion || event.descripcion}
-            </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div className="flex items-center gap-3 text-zinc-300 bg-white/5 p-3 rounded-xl border border-white/5">
