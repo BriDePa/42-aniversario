@@ -27,7 +27,7 @@ export function Navbar() {
           <a href="/" className="hover:text-fuchsia-400 transition-colors">Inicio</a>
           <a href="/#eventos" className="hover:text-fuchsia-400 transition-colors">Cronograma</a>
           <a href="/fiesta" className="text-white font-bold hover:text-fuchsia-400 transition-colors drop-shadow-[0_0_10px_rgba(255,0,255,0.5)]">Fiesta Alcohoritmo</a>
-          <a href={whatsappLink} target="_blank" rel="noreferrer" className="hover:text-fuchsia-400 transition-colors">Contacto</a>
+          
         </div>
 
         {/* Actions - Hidden por petición del usuario
@@ -53,7 +53,7 @@ export function Navbar() {
           <a href="/" onClick={() => setIsOpen(false)} className="text-white text-lg">Inicio</a>
           <a href="/#eventos" onClick={() => setIsOpen(false)} className="text-zinc-300 text-lg">Cronograma Completo</a>
           <a href="/fiesta" onClick={() => setIsOpen(false)} className="text-fuchsia-400 font-bold text-lg">Fiesta Alcohoritmo</a>
-          <a href={whatsappLink} target="_blank" rel="noreferrer" onClick={() => setIsOpen(false)} className="text-zinc-300 text-lg">Contacto Oficial</a>
+          
           <div className="h-px bg-white/10 my-2" />
           {/* <a href="/admin" className="w-full block text-center text-white px-5 py-3 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/20 font-bold">
             Administrar

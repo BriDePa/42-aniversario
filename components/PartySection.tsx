@@ -2,7 +2,7 @@
 
 import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
 import { Ghost, MapPin, Martini, Ticket, Info, CheckCircle2 } from "lucide-react";
-import BorderGlow from "./BorderGlow";
+import BorderGlowimport TearTicket from "./TearTicket";
 import { StaffCarousel } from "./StaffCarousel";
 
 export function PartySection() {
@@ -84,6 +84,62 @@ export function PartySection() {
               <p className="text-zinc-500 text-xs leading-relaxed">{party.bonusDobleFiesta.descripcion}</p>
             </div>
           </BorderGlow>
+        </div>
+
+        
+        {/* Interactive Ticket Section */}
+        <div className="flex flex-col items-center justify-center my-24 z-10 relative">
+          <div className="text-center mb-10">
+            <h3 className="text-3xl font-bold text-white mb-2">Tu Pase de Acceso</h3>
+            <p className="text-zinc-400">Desgarra el talón de la manilla interactiva.</p>
+          </div>
+          
+          <div className="hidden sm:block">
+            <TearTicket
+              width={600}
+              height={220}
+              stubSize={160}
+              stubBackground="linear-gradient(135deg, #ec4899, #a855f7)"
+              className="drop-shadow-[0_0_50px_rgba(236,72,153,0.3)]"
+              stub={
+                <div className="flex flex-col items-center justify-center h-full w-full">
+                  <span className="text-white font-black text-4xl mb-1 drop-shadow-md">VIP</span>
+                  <span className="text-fuchsia-100 font-bold text-xl">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+                </div>
+              }
+            >
+              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-10 border border-fuchsia-500/20 rounded-l-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 blur-3xl rounded-full"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full"></div>
+                
+                <h4 className="text-4xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 mb-2 relative z-10">ALCOHORITMO</h4>
+                <p className="text-lg text-zinc-400 uppercase tracking-widest relative z-10">Halloween V.11 F.255</p>
+                <div className="mt-4 inline-flex px-3 py-1 bg-white/5 rounded-lg border border-white/10 w-fit relative z-10">
+                  <span className="text-xs text-zinc-300 font-mono">ID: ALCO-2026-VIP</span>
+                </div>
+              </div>
+            </TearTicket>
+          </div>
+          <div className="sm:hidden block">
+            <TearTicket
+              width={340}
+              height={140}
+              stubSize={90}
+              stubBackground="linear-gradient(135deg, #ec4899, #a855f7)"
+              className="drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]"
+              stub={
+                <div className="flex flex-col items-center justify-center h-full w-full p-2">
+                  <span className="text-white font-black text-2xl drop-shadow-md">VIP</span>
+                  <span className="text-fuchsia-100 font-bold text-sm">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+                </div>
+              }
+            >
+              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-4 border border-fuchsia-500/20 rounded-l-2xl">
+                <h4 className="text-xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 mb-1">ALCOHORITMO</h4>
+                <p className="text-xs text-zinc-400 uppercase tracking-widest">Halloween V.11</p>
+              </div>
+            </TearTicket>
+          </div>
         </div>
 
         {/* Staff Section */}
