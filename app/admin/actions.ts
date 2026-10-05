@@ -41,6 +41,7 @@ export async function saveEvent(formData: FormData) {
   
   const fecha_inicio = formData.get('fecha_inicio') as string
   const fecha_fin = formData.get('fecha_fin') as string | null
+  const fecha_expiracion = formData.get('fecha_expiracion') as string | null
   const comision = formData.get('comision') as string | null
   const whatsapp_mensaje = formData.get('whatsapp_mensaje') as string | null
   const ubicacion_url = formData.get('ubicacion_url') as string | null
@@ -56,7 +57,6 @@ export async function saveEvent(formData: FormData) {
   const avisos = avisosStr ? JSON.parse(avisosStr) : []
   
   const imagen = formData.get('imagen') as File | null
-  
   let imagen_url = null
   
   if (imagen && imagen.size > 0) {
@@ -78,6 +78,28 @@ export async function saveEvent(formData: FormData) {
     imagen_url = publicUrlData.publicUrl
   }
 
+  const banner = formData.get('banner') as File | null
+  let banner_url = null
+
+  if (banner && banner.size > 0) {
+    const fileExt = banner.name.split('.').pop()
+    const fileName = `banner_${Math.random()}.${fileExt}`
+    const { data, error } = await supabase.storage
+      .from('imagenes_eventos')
+      .upload(`eventos/${fileName}`, banner)
+      
+    if (error) {
+      console.error("Error uploading banner:", error)
+      return { success: false, error: "Error al subir el banner" }
+    }
+    
+    const { data: publicUrlData } = supabase.storage
+      .from('imagenes_eventos')
+      .getPublicUrl(`eventos/${fileName}`)
+      
+    banner_url = publicUrlData.publicUrl
+  }
+
   let eventId = id
 
   const eventData: any = { 
@@ -89,6 +111,7 @@ export async function saveEvent(formData: FormData) {
     descripcion,
     fecha_inicio,
     fecha_fin,
+    fecha_expiracion,
     comision,
     whatsapp_mensaje,
     es_convocatoria
@@ -96,6 +119,10 @@ export async function saveEvent(formData: FormData) {
 
   if (imagen_url) {
     eventData.imagen_url = imagen_url
+  }
+
+  if (banner_url) {
+    eventData.banner_url = banner_url
   }
 
   if (id) {

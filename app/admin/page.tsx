@@ -16,8 +16,8 @@ export default async function AdminDashboard() {
   const { data: allEventos, error } = await supabase
     .from('eventos')
     .select(`
-      id, slug, titulo, categoria, ubicacion, descripcion, imagen_url, 
-      fecha_inicio, fecha_fin, comision, whatsapp_mensaje, es_convocatoria, 
+      id, slug, titulo, categoria, ubicacion, ubicacion_url, descripcion, imagen_url, banner_url,
+      fecha_inicio, fecha_fin, fecha_expiracion, comision, whatsapp_mensaje, es_convocatoria, 
       sesiones(id, fecha, hora_inicio, hora_fin, detalle),
       encargados(id, nombre, telefono, rol, email),
       avisos(id, titulo, url_archivo, descripcion)

@@ -12,6 +12,14 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
 
   // Filter convocatorias: esConvocatoria === true OR rawAvisos has files
   const convocatorias = events.filter((event) => {
+    // Check expiration if it has one
+    if (event.fecha_expiracion) {
+      const expirationDate = new Date(event.fecha_expiracion);
+      if (new Date() > expirationDate) {
+        return false;
+      }
+    }
+
     if (event.esConvocatoria) return true;
     
     // Check if avisos exist and have files
@@ -25,7 +33,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
   if (convocatorias.length === 0) return null;
 
   const carouselItems = convocatorias.map(ev => ({
-    src: ev.imagenUrl || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=", // 1x1 white pixel as fallback
+    src: ev.banner_url || ev.imagenUrl || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=", // 1x1 white pixel as fallback
     title: ev.titulo,
     subtitle: ev.categoria || "Convocatoria",
   }));

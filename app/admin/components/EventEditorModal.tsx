@@ -45,6 +45,7 @@ const eventSchema = z.object({
   comision: z.string().optional(),
   whatsapp_mensaje: z.string().optional(),
   es_convocatoria: z.boolean().optional(),
+  fecha_expiracion: z.string().optional(),
   sesiones: z.array(z.object({
     id: z.string().optional(),
     fecha: z.string().min(1, "Fecha es requerida"),
@@ -78,8 +79,10 @@ type Evento = {
   ubicacion_url?: string | null
   descripcion: string | null
   imagen_url?: string | null
+  banner_url?: string | null
   fecha_inicio?: string | null
   fecha_fin?: string | null
+  fecha_expiracion?: string | null
   comision?: string | null
   whatsapp_mensaje?: string | null
   es_convocatoria?: boolean
@@ -102,8 +105,11 @@ export function EventEditorModal({
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [bannerFile, setBannerFile] = useState<File | null>(null)
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null)
   
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const bannerInputRef = useRef<HTMLInputElement>(null)
 
   const {
     register,
@@ -161,6 +167,7 @@ export function EventEditorModal({
         descripcion: event.descripcion || "",
         fecha_inicio: event.fecha_inicio ? new Date(event.fecha_inicio).toISOString().split('T')[0] : "",
         fecha_fin: event.fecha_fin ? new Date(event.fecha_fin).toISOString().split('T')[0] : "",
+        fecha_expiracion: event.fecha_expiracion ? new Date(event.fecha_expiracion).toISOString().slice(0, 16) : "",
         comision: event.comision || "",
         whatsapp_mensaje: event.whatsapp_mensaje || "",
         es_convocatoria: !!event.es_convocatoria,
@@ -186,6 +193,7 @@ export function EventEditorModal({
         })) || [],
       })
       setImagePreview(event.imagen_url || null)
+      setBannerPreview(event.banner_url || null)
     } else {
       reset({
         id: undefined,
@@ -197,6 +205,7 @@ export function EventEditorModal({
         descripcion: "",
         fecha_inicio: "",
         fecha_fin: "",
+        fecha_expiracion: "",
         comision: "",
         whatsapp_mensaje: "",
         es_convocatoria: false,
@@ -205,8 +214,10 @@ export function EventEditorModal({
         avisos: [],
       })
       setImagePreview(null)
+      setBannerPreview(null)
     }
     setImageFile(null)
+    setBannerFile(null)
     setErrorMsg(null)
   }, [event, isOpen, reset])
 
@@ -224,6 +235,7 @@ export function EventEditorModal({
       
       formData.append("fecha_inicio", data.fecha_inicio)
       if (data.fecha_fin) formData.append("fecha_fin", data.fecha_fin)
+      if (data.fecha_expiracion) formData.append("fecha_expiracion", data.fecha_expiracion)
       if (data.comision) formData.append("comision", data.comision)
       if (data.whatsapp_mensaje) formData.append("whatsapp_mensaje", data.whatsapp_mensaje)
       formData.append("es_convocatoria", (!!data.es_convocatoria).toString())
@@ -234,6 +246,9 @@ export function EventEditorModal({
       
       if (imageFile) {
         formData.append("imagen", imageFile)
+      }
+      if (bannerFile) {
+        formData.append("banner", bannerFile)
       }
 
       const result = await saveEvent(formData as any) // Note: saveEvent accepts FormData directly now
@@ -259,6 +274,23 @@ export function EventEditorModal({
     setImagePreview(null)
     if (fileInputRef.current) {
       fileInputRef.current.value = ""
+    }
+  }
+
+  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setBannerFile(file)
+      const url = URL.createObjectURL(file)
+      setBannerPreview(url)
+    }
+  }
+
+  const removeBanner = () => {
+    setBannerFile(null)
+    setBannerPreview(null)
+    if (bannerInputRef.current) {
+      bannerInputRef.current.value = ""
     }
   }
 
@@ -525,8 +557,51 @@ export function EventEditorModal({
                     checked={watch("es_convocatoria")} 
                     onCheckedChange={(val) => setValue("es_convocatoria", val)}
                   />
-                  <Label htmlFor="es_convocatoria" className="text-zinc-300">Es Convocatoria</Label>
+                  <Label htmlFor="es_convocatoria" className="text-zinc-300">Destacar en "Convocatorias y Avisos" (Página Principal)</Label>
                 </div>
+
+                {watch("es_convocatoria") && (
+                  <div className="p-4 rounded-xl bg-black/20 border border-fuchsia-500/20 space-y-4 mb-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-fuchsia-400 font-semibold">Expiración (Cuándo dejará de mostrarse en el carrusel principal)</Label>
+                      <Input type="datetime-local" {...register("fecha_expiracion")} className="bg-black/40 border-white/10 h-9 text-sm focus:border-fuchsia-500" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label className="text-xs text-fuchsia-400 font-semibold">Fotografía para el Aviso (Opcional, si no se usa la principal)</Label>
+                      <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-white/10 border-dashed rounded-xl bg-black/40 hover:bg-black/60 transition-colors relative group">
+                        {bannerPreview ? (
+                          <div className="relative w-full aspect-[21/9] sm:aspect-video rounded-lg overflow-hidden">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={bannerPreview} alt="Banner Preview" className="object-cover w-full h-full" />
+                            <button
+                              type="button"
+                              onClick={removeBanner}
+                              className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-red-500/80 rounded-full text-white backdrop-blur-sm transition-all"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="space-y-1 text-center">
+                            <ImageIcon className="mx-auto h-8 w-8 text-zinc-500 group-hover:text-fuchsia-400 transition-colors" />
+                            <div className="flex text-xs text-zinc-400 justify-center">
+                              <label
+                                htmlFor="banner-upload"
+                                className="relative cursor-pointer rounded-md font-medium text-fuchsia-400 hover:text-fuchsia-300 bg-transparent"
+                              >
+                                <span>Sube un archivo</span>
+                                <input id="banner-upload" name="banner-upload" type="file" className="sr-only" accept="image/*" onChange={handleBannerChange} ref={bannerInputRef} />
+                              </label>
+                              <p className="pl-1">o arrastra y suelta</p>
+                            </div>
+                            <p className="text-[10px] text-zinc-500">PNG, JPG hasta 5MB (Recomendado apaisado)</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="flex justify-end border-t border-white/10 pt-4 mt-2">
                   <Button type="button" variant="outline" size="sm" onClick={() => appendAviso({ titulo: "", url_archivo: "", descripcion: "" })} className="bg-blue-500/20 border-blue-500/50 text-blue-300 hover:bg-blue-500/30">

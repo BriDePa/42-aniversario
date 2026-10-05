@@ -21,11 +21,9 @@ export function PartySection() {
             <Ghost size={16} /> Gran Cierre del {meta.titulo}
           </div>
           
-          <div className="relative mb-8 max-w-4xl mx-auto">
-             {/* Billboard Image behind */}
-             <img src="/alcohoritmo2.jpg" alt="Alcohoritmo Billboard" className="w-full rounded-3xl opacity-60 mix-blend-screen shadow-[0_0_100px_rgba(255,0,255,0.2)]" />
-             {/* Text Logo overlapping */}
-             <img src="/alcohoritmo1.png" alt="Alcohoritmo Logo" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 sm:w-3/4 drop-shadow-[0_0_30px_rgba(255,0,255,0.8)]" />
+          <div className="relative mb-8 max-w-4xl mx-auto px-4">
+             {/* Billboard Image */}
+             <img src="/alcohoritmo2.jpg" alt="Alcohoritmo Billboard" className="w-full rounded-3xl opacity-80 shadow-[0_0_50px_rgba(255,0,255,0.15)] border border-white/5" />
           </div>
 
           <p className="text-xl sm:text-2xl text-zinc-300 font-medium max-w-2xl mt-4">

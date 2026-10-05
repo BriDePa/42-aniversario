@@ -18,7 +18,9 @@ export default async function Home() {
     categoria,
     descripcion,
     imagen_url,
+    banner_url,
     es_convocatoria,
+    fecha_expiracion,
     fecha_inicio,
     ubicacion,
     ubicacion_url,
@@ -43,32 +45,40 @@ export default async function Home() {
     console.error("Error fetching events:", error);
   }
 
-  const mappedEvents: EventItem[] = (events || []).map((ev: any) => {
-    const primeraSesion = ev.sesiones?.[0];
-    const rawDate = (primeraSesion?.fecha || ev.fecha_inicio || "2024-01-01").split('T')[0];
-    const [year, month, day] = rawDate.split('-');
-    const dateObj = new Date(Date.UTC(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10)));
-    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    return {
-      id: ev.id,
-      titulo: ev.titulo,
-      tituloOriginalNotion: ev.titulo,
-      categoria: ev.categoria || "General",
-      fecha: rawDate,
-      diaSemana: dias[dateObj.getUTCDay() || 0],
-      horaInicio: primeraSesion?.hora_inicio || "00:00",
-      horaFin: primeraSesion?.hora_fin || null,
-      ubicacion: ev.ubicacion || "Por definir",
-      ubicacion_url: ev.ubicacion_url || null,
-      comision: ev.comision || "",
-      esConvocatoria: ev.es_convocatoria,
-      descripcion: ev.descripcion || "",
-      basesUrl: ev.avisos?.[0]?.url_archivo || null,
-      imagenUrl: ev.imagen_url,
-      encargados: [],
-      whatsappMensajeSugerido: ev.whatsapp_mensaje || `Hola, tengo una duda sobre ${ev.titulo}`,
-      rawAvisos: ev.avisos,
-    } as any;
+  const mappedEvents: EventItem[] = (events || []).flatMap((ev: any) => {
+    const sesiones = (ev.sesiones && ev.sesiones.length > 0) ? ev.sesiones : [null];
+    
+    return sesiones.map((sesion: any, idx: number) => {
+      const rawDate = (sesion?.fecha || ev.fecha_inicio || "2024-01-01").split('T')[0];
+      const [year, month, day] = rawDate.split('-');
+      const dateObj = new Date(Date.UTC(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10)));
+      const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      
+      const tituloConDetalle = sesion?.detalle ? `${ev.titulo} - ${sesion.detalle}` : ev.titulo;
+
+      return {
+        id: sesion ? `${ev.id}-${sesion.id}` : ev.id,
+        titulo: tituloConDetalle,
+        tituloOriginalNotion: ev.titulo,
+        categoria: ev.categoria || "General",
+        fecha: rawDate,
+        diaSemana: dias[dateObj.getUTCDay() || 0],
+        horaInicio: sesion?.hora_inicio || "00:00",
+        horaFin: sesion?.hora_fin || null,
+        ubicacion: ev.ubicacion || "Por definir",
+        ubicacion_url: ev.ubicacion_url || null,
+        comision: ev.comision || "",
+        esConvocatoria: ev.es_convocatoria,
+        fecha_expiracion: ev.fecha_expiracion,
+        banner_url: ev.banner_url,
+        descripcion: ev.descripcion || "",
+        basesUrl: ev.avisos?.[0]?.url_archivo || null,
+        imagenUrl: ev.imagen_url,
+        encargados: [],
+        whatsappMensajeSugerido: ev.whatsapp_mensaje || `Hola, tengo una duda sobre ${ev.titulo}`,
+        rawAvisos: ev.avisos,
+      } as any;
+    });
   });
 
   return (

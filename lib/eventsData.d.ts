@@ -11,6 +11,8 @@ export interface EventItem {
   ubicacion_url?: string | null;
   comision: string;
   esConvocatoria: boolean;
+  fecha_expiracion?: string | null;
+  banner_url?: string | null;
   descripcion: string;
   basesUrl: string | null;
   imagenUrl?: string;

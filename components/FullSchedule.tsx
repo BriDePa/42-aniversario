@@ -17,14 +17,33 @@ export function FullSchedule({ events = [] }: { events?: EventItem[] }) {
   }, [events]);
 
   const days = useMemo(() => {
-    const d = new Set(events.map(e => e.diaSemana || "Otros"));
-    return ["Todos", ...Array.from(d)];
+    const datesMap = new Map<string, string>();
+    events.forEach(e => {
+      if (e.fecha && e.diaSemana) {
+        const parts = e.fecha.split('-'); // [YYYY, MM, DD]
+        if (parts.length === 3) {
+          const formatted = `${e.diaSemana} ${parts[2]}/${parts[1]}`;
+          datesMap.set(e.fecha, formatted);
+        }
+      }
+    });
+    const sortedDates = Array.from(datesMap.keys()).sort((a, b) => a.localeCompare(b));
+    return ["Todos", ...sortedDates.map(date => datesMap.get(date)!)];
   }, [events]);
 
   const filteredEvents = useMemo(() => {
     return events.filter(e => {
       const matchCat = selectedCategory === "Todas" || (e.categoria || "Otros") === selectedCategory;
-      const matchDay = selectedDay === "Todos" || (e.diaSemana || "Otros") === selectedDay;
+      
+      let matchDay = selectedDay === "Todos";
+      if (selectedDay !== "Todos" && e.fecha && e.diaSemana) {
+        const parts = e.fecha.split('-');
+        if (parts.length === 3) {
+          const formatted = `${e.diaSemana} ${parts[2]}/${parts[1]}`;
+          matchDay = formatted === selectedDay;
+        }
+      }
+      
       return matchCat && matchDay;
     });
   }, [events, selectedCategory, selectedDay]);
