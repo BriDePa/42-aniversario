@@ -2,7 +2,8 @@
 
 import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
 import { Ghost, MapPin, Martini, Ticket, Info, CheckCircle2 } from "lucide-react";
-import BorderGlowimport TearTicket from "./TearTicket";
+import BorderGlow from "./BorderGlow";
+import TearTicket from "./TearTicket";
 import { StaffCarousel } from "./StaffCarousel";
 
 export function PartySection() {
