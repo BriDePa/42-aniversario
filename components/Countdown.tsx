@@ -47,10 +47,10 @@ export function Countdown({ targetDate }: { targetDate: string }) {
   return (
     <div className="flex gap-4 sm:gap-6 justify-center mt-10">
       {[
-        { label: 'Days', value: timeLeft.days },
-        { label: 'Hours', value: timeLeft.hours },
-        { label: 'Minutes', value: timeLeft.minutes },
-        { label: 'Seconds', value: timeLeft.seconds },
+        { label: 'Días', value: timeLeft.days },
+        { label: 'Horas', value: timeLeft.hours },
+        { label: 'Minutos', value: timeLeft.minutes },
+        { label: 'Segundos', value: timeLeft.seconds },
       ].map((item) => (
         <div key={item.label} className="flex flex-col items-center">
           <div className="relative group">

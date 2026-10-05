@@ -13,11 +13,12 @@ export function Footer() {
           
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <Hexagon className="text-fuchsia-500 fill-fuchsia-500" size={32} />
-              <span className="text-white font-bold text-2xl tracking-tight">
-                Hub<span className="text-fuchsia-400">42</span>
-              </span>
-            </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="Logo Carrera" className="w-10 h-10 object-contain rounded-full bg-white p-0.5" />
+                <span className="text-white font-bold text-2xl tracking-tight">
+                  Informática <span className="text-fuchsia-400">42</span>
+                </span>
+              </div>
             <p className="text-zinc-400 max-w-md mb-6 leading-relaxed">
               Plataforma oficial del {meta.titulo} de la Carrera de {meta.carrera}, {meta.universidad}.
             </p>
