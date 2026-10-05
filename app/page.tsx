@@ -7,15 +7,19 @@ import { FullSchedule } from "@/components/FullSchedule";
 import { PartySection } from "@/components/PartySection";
 import { Footer } from "@/components/Footer";
 import TextLoop from "@/components/TextLoop";
-import { createClient } from "@/utils/supabase/server";
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { EventItem } from "@/lib/eventsData";
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   let events: any[] = [];
+  let debugError = null;
   try {
-    const supabase = await createClient();
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     const { data, error } = await supabase.from('eventos').select(`
     id,
     titulo,
@@ -59,9 +63,11 @@ export default async function Home() {
     }
     
     if (error) {
+      debugError = error.message;
       console.error("Error fetching events:", error);
     }
-  } catch (err) {
+  } catch (err: any) {
+    debugError = err?.message || String(err);
     console.error("Exception fetching events:", err);
   }
 
@@ -105,6 +111,12 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-[#0B0813] selection:bg-fuchsia-500/30 overflow-x-hidden">
+      {debugError && (
+        <div className="bg-red-600 text-white p-4 text-center z-[9999] relative">
+          ⚠️ <b>Error de Conexión a Base de Datos:</b> {debugError}.<br/> 
+          <i>Nota para admin: Revisa que las variables de entorno NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY estén configuradas correctamente en el panel de Vercel.</i>
+        </div>
+      )}
       <Navbar />
       <Hero />
       <CalendarView events={mappedEvents} />
