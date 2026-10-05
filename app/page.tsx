@@ -11,8 +11,10 @@ import { createClient } from "@/utils/supabase/server";
 import { EventItem } from "@/lib/eventsData";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { data: events, error } = await supabase.from('eventos').select(`
+  let events: any[] = [];
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from('eventos').select(`
     id,
     titulo,
     categoria,
@@ -40,9 +42,16 @@ export default async function Home() {
       descripcion
     )
   `);
-
-  if (error) {
-    console.error("Error fetching events:", error);
+    
+    if (data) {
+      events = data;
+    }
+    
+    if (error) {
+      console.error("Error fetching events:", error);
+    }
+  } catch (err) {
+    console.error("Exception fetching events:", err);
   }
 
   const mappedEvents: EventItem[] = (events || []).flatMap((ev: any) => {
