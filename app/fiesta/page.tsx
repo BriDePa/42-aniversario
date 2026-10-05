@@ -32,6 +32,17 @@ export default function FiestaPage() {
         <div className="absolute inset-0 z-1 bg-gradient-to-b from-[#05030A]/80 via-transparent to-transparent pointer-events-none" />
 
         <div className="relative z-10 text-center px-4 flex flex-col items-center mt-12 md:mt-24">
+          
+          <div className="text-2xl sm:text-4xl text-fuchsia-400 font-bold mb-4 tracking-[0.3em] uppercase drop-shadow-md">
+            <ScrambledText
+              duration={1.5}
+              speed={0.4}
+              scrambleChars="16/10 ✦ FORUM"
+            >
+              16/10 ✦ FORUM
+            </ScrambledText>
+          </div>
+
           <div className="mb-4 sm:mb-8 select-none pointer-events-auto cursor-crosshair">
             <FuzzyText 
               baseIntensity={0.1} 
@@ -44,16 +55,6 @@ export default function FiestaPage() {
             >
               ALCOHORITMO
             </FuzzyText>
-          </div>
-          
-          <div className="text-xl sm:text-2xl text-fuchsia-400 font-bold mb-6 tracking-[0.3em] uppercase drop-shadow-md">
-            <ScrambledText
-              duration={1.5}
-              speed={0.4}
-              scrambleChars="16/10 ✦ FORUM"
-            >
-              16/10 ✦ FORUM
-            </ScrambledText>
           </div>
           
           <div className="text-zinc-300 max-w-2xl mx-auto text-lg sm:text-xl font-light drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] leading-relaxed">
