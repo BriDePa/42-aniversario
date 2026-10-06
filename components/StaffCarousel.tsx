@@ -8,14 +8,15 @@ export function StaffCarousel() {
   const staffMembers = ANIVERSARIO_METADATA.staffsVentaEntradas as Array<{ nombre: string; telefono: string; enlace: string }>;
   
   // Array for continuous scrolling
-  const duplicatedStaff = [...staffMembers, ...staffMembers, ...staffMembers, ...staffMembers];
+  // Array for continuous scrolling with delay
+  const duplicatedStaff = [...staffMembers];
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-8 overflow-hidden relative">
+    <div className="w-full flex flex-col items-start justify-start py-8 overflow-hidden relative">
       <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#0B0813] to-transparent z-10 pointer-events-none"></div>
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#0B0813] to-transparent z-10 pointer-events-none"></div>
 
-      <div className="flex animate-marquee gap-6 hover:[animation-play-state:paused] cursor-pointer" style={{ width: 'max-content' }}>
+      <div className="flex animate-marquee-delay gap-6 hover:[animation-play-state:paused] cursor-pointer" style={{ width: 'max-content' }}>
         {duplicatedStaff.map((staff, idx) => (
           <a
             key={idx}

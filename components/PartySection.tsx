@@ -121,7 +121,7 @@ export function PartySection() {
               </div>
             </TearTicket>
           </div>
-          <div className="sm:hidden block">
+          <div className="sm:hidden flex justify-center w-full mt-4">
             <TearTicket
               width={340}
               height={140}
