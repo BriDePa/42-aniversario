@@ -3,6 +3,8 @@ import { Footer } from "@/components/Footer";
 import { PartySection } from "@/components/PartySection";
 import RippleDistortion from "@/components/RippleDistortion";
 import FuzzyText from "@/components/FuzzyText";
+import SpecularButton from "@/components/SpecularButton";
+import { MessageCircle } from "lucide-react";
 
 export default function FiestaPage() {
   return (
@@ -50,8 +52,34 @@ export default function FiestaPage() {
             </FuzzyText>
           </div>
           
-          <div className="text-zinc-300 max-w-2xl mx-auto text-lg sm:text-xl font-light tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] leading-relaxed">
+          <div className="text-zinc-300 max-w-2xl mx-auto text-lg sm:text-xl font-light tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] leading-relaxed mb-6">
             Gran Fiesta de Aniversario
+          </div>
+
+          {/* Botón discreto WhatsApp que conduce directamente al boleto "Tu Pase de Acceso" */}
+          <div className="z-20">
+            <a href="#tu-pase-acceso" className="inline-block group">
+              <SpecularButton
+                size="sm"
+                radius={24}
+                tint="#ec4899"
+                tintOpacity={0.12}
+                blur={8}
+                textColor="#f472b6"
+                lineColor="#f472b6"
+                baseColor="#2e1065"
+                intensity={1.2}
+                autoAnimate={true}
+                speed={0.4}
+                className="font-mono text-xs font-semibold tracking-wider uppercase px-5 py-2.5 shadow-[0_0_20px_rgba(236,72,153,0.2)] hover:shadow-[0_0_30px_rgba(236,72,153,0.4)] transition-shadow"
+              >
+                <span className="flex items-center gap-2">
+                  <MessageCircle size={15} className="text-emerald-400" />
+                  <span>WhatsApp Oficial</span>
+                  <span className="text-[10px] text-zinc-400 font-normal">↓</span>
+                </span>
+              </SpecularButton>
+            </a>
           </div>
         </div>
       </section>

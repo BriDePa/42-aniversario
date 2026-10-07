@@ -4,12 +4,13 @@ import { useState } from "react";
 import { FIESTA_ALCOHORITMO, ANIVERSARIO_METADATA } from "@/lib/eventsData";
 import { 
   MapPin, Ticket, Info, CheckCircle2, Star, Sparkles, Trophy, Shirt, 
-  X, ZoomIn, Gift, Calendar, AlertCircle, ShieldAlert, Bell, MessageSquare
+  X, ZoomIn, Gift, Calendar, AlertCircle, ShieldAlert, Bell, MessageSquare, Wine
 } from "lucide-react";
 import BorderGlow from "./BorderGlow";
 import TearTicket from "./TearTicket";
 import { StaffCarousel } from "./StaffCarousel";
 import ScrollFloat from "./ScrollFloat";
+import SlideCommit from "./SlideCommit";
 
 interface ComboPoster {
   id: string;
@@ -69,6 +70,12 @@ const COMBOS_DATA: ComboPoster[] = [
 ];
 
 const AVISOS_FIESTA = [
+  {
+    tag: "Beneficio Grupal • 19:00 a 21:00",
+    titulo: "Ingreso de Botella Sellada (Grupos de 10)",
+    detalle: "De 7:00 PM a 9:00 PM (19:00 a 21:00), los grupos de 10 personas tienen permitido el ingreso de 1 botella de vidrio sellada original a la fiesta.",
+    tipo: "exclusivo",
+  },
   {
     tag: "Aforo y Mesas",
     titulo: "Mesas Exclusivas Limitadas",
@@ -292,80 +299,96 @@ export function PartySection() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {COMBOS_DATA.map((combo) => (
-              <div
+              <BorderGlow 
                 key={combo.id}
-                className="group flex flex-col rounded-3xl overflow-hidden bg-[#0A0713] border border-fuchsia-500/20 hover:border-fuchsia-500/60 transition-all duration-300 shadow-[0_0_25px_rgba(217,70,239,0.08)] hover:shadow-[0_0_35px_rgba(217,70,239,0.25)]"
+                colors={["#ec4899", "#a855f7"]}
+                borderRadius={24}
+                glowRadius={25}
+                glowIntensity={1}
+                className="w-full h-full"
               >
-                {/* Poster container (9:16 aspect ratio look) */}
-                <div 
-                  onClick={() => setActiveModalPoster(combo)}
-                  className="relative aspect-[9/16] w-full overflow-hidden bg-black/60 cursor-pointer"
+                <div
+                  className="group flex flex-col h-full rounded-[inherit] overflow-hidden bg-[#0A0713] transition-all duration-300"
                 >
-                  <img
-                    src={combo.imagen}
-                    alt={combo.nombre}
-                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0713] via-transparent to-transparent opacity-80" />
+                  {/* Poster container (9:16 aspect ratio look) */}
+                  <div 
+                    onClick={() => setActiveModalPoster(combo)}
+                    className="relative aspect-[9/16] w-full overflow-hidden bg-black/60 cursor-pointer"
+                  >
+                    <img
+                      src={combo.imagen}
+                      alt={combo.nombre}
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0713] via-transparent to-transparent opacity-80" />
 
-                  {/* Zoom indicator on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 border border-fuchsia-500/50 text-white font-mono text-xs font-bold tracking-wider">
-                      <ZoomIn size={14} className="text-fuchsia-400" />
-                      Ver Poster Completo
-                    </span>
-                  </div>
-
-                  {/* Status badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border ${
-                      combo.disponible
-                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                        : "bg-purple-500/20 text-purple-300 border-purple-500/40"
-                    }`}>
-                      {combo.disponible ? "Disponible" : "Próximamente"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Info & Action Footer */}
-                <div className="p-5 flex flex-col flex-1 justify-between gap-4">
-                  <div>
-                    <h4 className="text-xl font-black text-white group-hover:text-fuchsia-300 transition-colors">
-                      {combo.nombre}
-                    </h4>
-                    <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
-                      {combo.subtitulo}
-                    </p>
-                  </div>
-
-                  {/* Prices strip */}
-                  <div className={`grid ${combo.precioVip ? "grid-cols-2" : "grid-cols-1"} gap-2 bg-black/40 p-2.5 rounded-2xl border border-white/5 text-center`}>
-                    {combo.precioVip && (
-                      <div>
-                        <span className="text-[10px] text-zinc-500 uppercase tracking-widest block font-mono">VIP</span>
-                        <span className="text-xs font-mono font-bold text-fuchsia-300">{combo.precioVip}</span>
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-[10px] text-zinc-500 uppercase tracking-widest block font-mono">
-                        {combo.precioVip ? "General" : "Precio Oficial"}
+                    {/* Zoom indicator on hover */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/70 border border-fuchsia-500/50 text-white font-mono text-xs font-bold tracking-wider">
+                        <ZoomIn size={14} className="text-fuchsia-400" />
+                        Ver Poster Completo
                       </span>
-                      <span className="text-xs font-mono font-bold text-emerald-300">{combo.precioGeneral}</span>
+                    </div>
+
+                    {/* Status badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border ${
+                        combo.disponible
+                          ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                          : "bg-purple-500/20 text-purple-300 border-purple-500/40"
+                      }`}>
+                        {combo.disponible ? "Disponible" : "Próximamente"}
+                      </span>
                     </div>
                   </div>
 
-                  <a
-                    href={buildComboWhatsAppUrl(combo.nombre)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-center gap-2 w-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-2.5 px-4 rounded-xl transition-colors shadow-[0_0_15px_rgba(217,70,239,0.3)] text-xs uppercase tracking-wider font-mono text-center"
-                  >
-                    <MessageSquare size={14} />
-                    Reservar {combo.nombre}
-                  </a>
+                  {/* Info & Action Footer */}
+                  <div className="p-5 flex flex-col flex-1 justify-between gap-4">
+                    <div>
+                      <h4 className="text-xl font-black text-white group-hover:text-fuchsia-300 transition-colors">
+                        {combo.nombre}
+                      </h4>
+                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+                        {combo.subtitulo}
+                      </p>
+                    </div>
+
+                    {/* Prices strip */}
+                    <div className={`grid ${combo.precioVip ? "grid-cols-2" : "grid-cols-1"} gap-2 bg-black/40 p-2.5 rounded-2xl border border-white/5 text-center`}>
+                      {combo.precioVip && (
+                        <div>
+                          <span className="text-[10px] text-zinc-500 uppercase tracking-widest block font-mono">VIP</span>
+                          <span className="text-xs font-mono font-bold text-fuchsia-300">{combo.precioVip}</span>
+                        </div>
+                      )}
+                      <div>
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-widest block font-mono">
+                          {combo.precioVip ? "General" : "Precio Oficial"}
+                        </span>
+                        <span className="text-xs font-mono font-bold text-emerald-300">{combo.precioGeneral}</span>
+                      </div>
+                    </div>
+
+                    {/* SlideCommit Action: Desliza para reservar por WhatsApp */}
+                    <div className="flex justify-center w-full pt-1">
+                      <SlideCommit
+                        width={240}
+                        height={46}
+                        radius={23}
+                        trackColor="#1a0b2e"
+                        handleColor="#d946ef"
+                        successColor="#22c55e"
+                        label={`Desliza: Reservar`}
+                        doneLabel="Abriendo..."
+                        onConfirm={() => {
+                          window.open(buildComboWhatsAppUrl(combo.nombre), "_blank");
+                        }}
+                        className="shadow-[0_0_15px_rgba(217,70,239,0.25)]"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </BorderGlow>
             ))}
           </div>
         </div>
@@ -561,7 +584,7 @@ export function PartySection() {
         </div>
 
         {/* ── TICKET INTERACTIVO — Pase de Acceso al final tras leer todo ── */}
-        <div className="flex flex-col items-center justify-center pt-10 pb-8 z-10 relative">
+        <div id="tu-pase-acceso" className="flex flex-col items-center justify-center pt-10 pb-8 z-10 relative scroll-mt-24">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-fuchsia-500/10 text-fuchsia-300 border border-fuchsia-500/20 font-mono text-xs uppercase tracking-widest mb-3">
               Comunidad Oficial
@@ -673,15 +696,22 @@ export function PartySection() {
                 <span className="text-sm font-bold text-fuchsia-300 font-mono mr-3">VIP: {activeModalPoster.precioVip}</span>
                 <span className="text-sm font-bold text-emerald-300 font-mono">GRAL: {activeModalPoster.precioGeneral}</span>
               </div>
-              <a
-                href={buildComboWhatsAppUrl(activeModalPoster.nombre)}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-2.5 px-6 rounded-xl transition-colors shadow-[0_0_20px_rgba(217,70,239,0.5)] text-xs uppercase tracking-wider font-mono"
-              >
-                <MessageSquare size={14} />
-                Reservar Mesa
-              </a>
+              <div className="w-full sm:w-auto flex justify-center">
+                <SlideCommit
+                  width={220}
+                  height={46}
+                  radius={23}
+                  trackColor="#1a0b2e"
+                  handleColor="#d946ef"
+                  successColor="#22c55e"
+                  label="Desliza: Reservar"
+                  doneLabel="Abriendo..."
+                  onConfirm={() => {
+                    window.open(buildComboWhatsAppUrl(activeModalPoster.nombre), "_blank");
+                  }}
+                  className="shadow-[0_0_20px_rgba(217,70,239,0.35)]"
+                />
+              </div>
             </div>
           </div>
         </div>
