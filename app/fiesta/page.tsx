@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { PartySection } from "@/components/PartySection";
 import RippleDistortion from "@/components/RippleDistortion";
 import FuzzyText from "@/components/FuzzyText";
-import ScrambledText from "@/components/ScrambledText";
 
 export default function FiestaPage() {
   return (
@@ -11,7 +10,7 @@ export default function FiestaPage() {
       <Navbar />
       
       {/* Hero Section with RippleDistortion Background */}
-      <section className="relative w-full h-[90vh] min-h-[700px] flex flex-col items-center justify-center overflow-hidden pt-32 pb-20 border-b border-fuchsia-500/10">
+      <section className="relative w-full h-[80vh] min-h-[600px] flex flex-col items-center justify-center overflow-hidden pt-28 pb-16 border-b border-fuchsia-500/10">
         <div className="absolute inset-0 z-0 opacity-40">
           <RippleDistortion 
             src="/alcohoritmo1.png"
@@ -31,16 +30,10 @@ export default function FiestaPage() {
         <div className="absolute inset-0 z-1 bg-gradient-to-t from-[#05030A] via-transparent to-[#05030A]/50 pointer-events-none" />
         <div className="absolute inset-0 z-1 bg-gradient-to-b from-[#05030A]/80 via-transparent to-transparent pointer-events-none" />
 
-        <div className="relative z-10 text-center px-4 flex flex-col items-center mt-12 md:mt-24">
+        <div className="relative z-10 text-center px-4 flex flex-col items-center mt-8 md:mt-16">
           
-          <div className="text-2xl sm:text-4xl text-fuchsia-400 font-bold mb-4 tracking-[0.3em] uppercase drop-shadow-md">
-            <ScrambledText
-              duration={1.5}
-              speed={0.4}
-              scrambleChars="16/10 ✦ FORUM"
-            >
-              16/10 ✦ FORUM
-            </ScrambledText>
+          <div className="text-xl sm:text-3xl text-fuchsia-400 font-bold mb-4 tracking-[0.25em] uppercase drop-shadow-md">
+            16/10 — FORUM
           </div>
 
           <div className="mb-4 sm:mb-8 select-none pointer-events-auto cursor-crosshair">
@@ -57,13 +50,8 @@ export default function FiestaPage() {
             </FuzzyText>
           </div>
           
-          <div className="text-zinc-300 max-w-2xl mx-auto text-lg sm:text-xl font-light drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] leading-relaxed">
-            <ScrambledText
-              duration={2}
-              speed={0.6}
-            >
-              NO FALTES!
-            </ScrambledText>
+          <div className="text-zinc-300 max-w-2xl mx-auto text-lg sm:text-xl font-light tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,0,0,0.8)] leading-relaxed">
+            Gran Fiesta de Aniversario
           </div>
         </div>
       </section>
