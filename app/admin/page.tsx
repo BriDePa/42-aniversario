@@ -28,7 +28,7 @@ export default async function AdminDashboard() {
   let eventos = allEventos || []
 
   // Role-Based Access Control (RBAC)
-  const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || 'deymarbrian02@gmail.com';
+  const superAdminEmail = process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL || '';
   // Removed strict filter so all authenticated users can see all events in the dashboard.
   // We can still pass down isSuperAdmin to hide the delete button if necessary.
 

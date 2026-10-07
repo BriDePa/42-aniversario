@@ -1,12 +1,10 @@
 "use client";
 
-import { Menu, X, Hexagon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { ANIVERSARIO_METADATA } from "@/lib/eventsData";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const meta = ANIVERSARIO_METADATA as Record<string, any>;
 
   const whatsappLink = "https://wa.me/59165991669?text=Hola%20Brian%2C%20vengo%20de%20la%20p%C3%A1gina%20oficial%20del%20aniversario";
 

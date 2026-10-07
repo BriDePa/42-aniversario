@@ -34,7 +34,7 @@ export function ConvocatoriasSection({ events = [] }: { events?: EventItem[] }) 
     return new Date(a.fecha_expiracion).getTime() - new Date(b.fecha_expiracion).getTime();
   });
 
-    const convocatorias: EventItem[] = [];
+  const convocatorias: EventItem[] = [];
   const seenIds = new Set();
   for (const c of allConvocatoriasFiltered) {
     const key = c.evento_id || c.id;

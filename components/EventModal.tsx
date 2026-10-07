@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Clock, MapPin, CalendarPlus, MessageCircle, Users } from "lucide-react";
 import { buildWhatsAppUrl, buildGoogleCalendarUrl, EventItem } from "@/lib/eventsData";
 
@@ -292,5 +293,5 @@ export function EventModal({ event, onClose }: { event: EventItem, onClose: () =
     </div>
   );
 
-  return require("react-dom").createPortal(modalContent, document.body);
+  return createPortal(modalContent, document.body);
 }

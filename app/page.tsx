@@ -117,9 +117,8 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-[#0B0813] selection:bg-fuchsia-500/30 overflow-x-hidden">
       {debugError && (
-        <div className="bg-red-600 text-white p-4 text-center z-[9999] relative">
-          ⚠️ <b>Error de Conexión a Base de Datos:</b> {debugError}.<br/> 
-          <i>Nota para admin: Revisa que las variables de entorno NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY estén configuradas correctamente en el panel de Vercel.</i>
+        <div className="bg-red-900/80 text-white p-4 text-center z-[9999] relative backdrop-blur-sm border-b border-red-500/30">
+          ⚠️ <b>No se pudieron cargar los eventos.</b> Por favor recarga la página o vuelve en unos minutos.
         </div>
       )}
       <Navbar />
@@ -127,12 +126,12 @@ export default async function Home() {
       <CalendarView events={mappedEvents} />
       
       <div className="w-full py-4 overflow-hidden">
-        <TextLoop text="CONVOCATORIAS" separator="✦" shape="line" fontSize={32} speed={120} />
+        <TextLoop text="CONVOCATORIAS" separator="✦" shape="line" fontSize={32} speed={120} viewHeight={90} ribbon={false} />
       </div>
       <ConvocatoriasSection events={mappedEvents} />
 
       <div className="w-full py-4 overflow-hidden">
-        <TextLoop text="PROGRAMA COMPLETO" separator="✦" shape="line" fontSize={32} speed={120} />
+        <TextLoop text="PROGRAMA COMPLETO" separator="✦" shape="line" fontSize={32} speed={120} viewHeight={90} ribbon={false} />
       </div>
       <FullSchedule events={mappedEvents} />
 

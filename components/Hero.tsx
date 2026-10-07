@@ -56,7 +56,7 @@ export function Hero() {
         </div>
 
         {/* Countdown to Oct 12, 2026 00:00 */}
-        <Countdown targetDate="2026-10-12T00:00:00-04:00" />
+        <Countdown targetDate="2026-10-08T00:00:00-04:00" />
       </div>
     </section>
   );

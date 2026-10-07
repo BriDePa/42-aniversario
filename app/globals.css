@@ -127,14 +127,40 @@
   html {
     @apply font-sans;
   }
-}@keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } } .animate-marquee { animation: marquee 20s linear infinite; display: inline-flex; }
+}
 
-@keyframes marquee-delay {
-  0% { transform: translateX(100vw); }
-  66% { transform: translateX(-100%); }
+/* ─── Marquee animation ─────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  display: inline-flex;
+}
+
+@keyframes marquee-delay {
+  0%   { transform: translateX(100vw); }
+  66%  { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); }
+}
+
 .animate-marquee-delay {
   animation: marquee-delay 30s linear infinite;
   display: inline-flex;
+}
+
+/* ─── Scrollbar utilities (CalendarView / EventModal) ── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar       { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
