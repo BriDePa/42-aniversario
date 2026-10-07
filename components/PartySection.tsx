@@ -9,7 +9,6 @@ import {
 import BorderGlow from "./BorderGlow";
 import TearTicket from "./TearTicket";
 import { StaffCarousel } from "./StaffCarousel";
-import ScrollFloat from "./ScrollFloat";
 import SlideCommit from "./SlideCommit";
 
 interface ComboPoster {
@@ -218,14 +217,9 @@ export function PartySection() {
         {/* ── DRESSING CODE / CONCEPTO HALLOWEEN ── */}
         <div className="mb-24">
           <div className="text-center mb-10">
-            <ScrollFloat
-              containerClassName="justify-center"
-              textClassName="font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-fuchsia-400 to-purple-500 uppercase tracking-widest"
-              animationDuration={1.2}
-              stagger={0.04}
-            >
+            <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-fuchsia-400 to-purple-400 uppercase tracking-widest my-4 drop-shadow-[0_0_25px_rgba(236,72,153,0.3)]">
               Dressing Code
-            </ScrollFloat>
+            </h2>
             <p className="text-zinc-400 max-w-xl mx-auto -mt-2">
               Detalles sobre la temática y concursos de la noche
             </p>
@@ -284,14 +278,9 @@ export function PartySection() {
         {/* ── GALERÍA DE POSTERS OFICIALES DE COMBOS ── */}
         <div className="mb-24" id="combos">
           <div className="text-center mb-12">
-            <ScrollFloat
-              containerClassName="justify-center"
-              textClassName="font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-500 uppercase tracking-widest"
-              animationDuration={1.2}
-              stagger={0.04}
-            >
+            <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-400 uppercase tracking-widest my-4 drop-shadow-[0_0_25px_rgba(217,70,239,0.3)]">
               Combos Oficiales
-            </ScrollFloat>
+            </h2>
             <p className="text-zinc-400 max-w-xl mx-auto -mt-2">
               Posters oficiales de combinados para grupos. Pulsa sobre cualquier cartel para ampliar los detalles.
             </p>
@@ -523,14 +512,9 @@ export function PartySection() {
                 Beneficio Especial
               </div>
 
-              <ScrollFloat
-                containerClassName="justify-center"
-                textClassName="font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 uppercase leading-none"
-                animationDuration={1.4}
-                stagger={0.03}
-              >
+              <h2 className="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 uppercase leading-none my-4 drop-shadow-[0_0_35px_rgba(16,185,129,0.35)]">
                 Doble Fiesta
-              </ScrollFloat>
+              </h2>
 
               <p className="text-2xl sm:text-3xl font-black text-white mb-4 -mt-2">
                 {party.bonusDobleFiesta.titulo}
