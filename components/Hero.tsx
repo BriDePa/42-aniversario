@@ -55,8 +55,13 @@ export function Hero() {
           />
         </div>
 
-        {/* Countdown to Oct 12, 2026 00:00 */}
-        <Countdown targetDate="2026-10-08T00:00:00-04:00" />
+        {/* Cuenta regresiva: primer evento académico hoy 14:00 y fallback a Gran Fiesta Alcohoritmo 16/10 */}
+        <Countdown 
+          targetDate="2026-10-08T14:00:00-04:00" 
+          targetTitle="Inauguración & Coloquio IA"
+          fallbackTargetDate="2026-10-16T19:00:00-04:00"
+          fallbackTargetTitle="Gran Fiesta Alcohoritmo (Forum)"
+        />
       </div>
     </section>
   );
