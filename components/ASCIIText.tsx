@@ -461,7 +461,9 @@ export default function ASCIIText({
       gl.uniform2f(uniforms.uCell, s.cellSize * 0.62 * dpr, s.cellSize * dpr);
       gl.uniform1f(uniforms.uGlyphCount, state.glyphCount);
       gl.uniform1f(uniforms.uTextAspect, state.textAspect);
-      gl.uniform1f(uniforms.uPlaneHeight, 0.5 * s.textScale);
+      const aspect = width / height;
+      const responsiveScale = aspect < 1.2 ? Math.max(0.35, (aspect / 1.2)) : 1.0;
+      gl.uniform1f(uniforms.uPlaneHeight, 0.5 * s.textScale * responsiveScale);
       gl.uniform2f(uniforms.uTilt, state.tiltX, state.tiltY);
       gl.uniform1f(uniforms.uTime, state.time);
       gl.uniform1f(uniforms.uWaves, s.waves);
