@@ -166,21 +166,10 @@ export function PartySection() {
 
         {/* ── HEADER ── */}
         <div className="text-center mb-16 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-500/20 text-orange-300 border border-orange-500/30 mb-8 font-mono text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(255,107,0,0.25)]">
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-500/20 text-orange-300 border border-orange-500/30 mb-6 font-mono text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(255,107,0,0.25)]">
             🔥 Gran Cierre del {meta.titulo} 🎃
           </div>
-          <div className="relative mb-8 max-w-4xl mx-auto px-4 group w-full">
-            <div className="absolute -inset-3 bg-gradient-to-r from-orange-600/35 via-fuchsia-600/30 to-purple-600/35 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-700 pointer-events-none" />
-            <div className="relative rounded-3xl overflow-hidden border border-orange-500/30 bg-black/90 p-4 sm:p-8 shadow-[0_0_60px_rgba(255,107,0,0.35)] flex items-center justify-center">
-              <img 
-                src="/alcohoritmo-logo-fuego.jpg" 
-                alt="Alcohoritmo Halloween Oficial" 
-                className="w-full max-h-[440px] object-contain drop-shadow-[0_0_40px_rgba(255,107,0,0.65)] hover:scale-[1.01] transition-transform duration-500" 
-                loading="eager"
-              />
-            </div>
-          </div>
-          <p className="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-orange-200 via-pink-100 to-purple-200 font-semibold max-w-2xl mt-4">
+          <p className="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-orange-200 via-pink-100 to-purple-200 font-semibold max-w-2xl mt-2">
             {party.eslogan}
           </p>
         </div>

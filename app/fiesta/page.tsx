@@ -1,7 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PartySection } from "@/components/PartySection";
-import RippleDistortion from "@/components/RippleDistortion";
 import SpecularButton from "@/components/SpecularButton";
 import { MessageCircle } from "lucide-react";
 
@@ -10,22 +9,8 @@ export default function FiestaPage() {
     <main className="min-h-screen bg-[#05030A] selection:bg-fuchsia-500/30 overflow-x-hidden relative">
       <Navbar />
       
-      {/* Hero Section with RippleDistortion Background & New Fiery Logo */}
-      <section className="relative w-full min-h-[82vh] flex flex-col items-center justify-center overflow-hidden pt-28 pb-16 border-b border-orange-500/20">
-        <div className="absolute inset-0 z-0 opacity-45">
-          <RippleDistortion 
-            src="/alcohoritmo-logo-fuego.jpg"
-            brushSize={140}
-            strength={0.35}
-            swirl={1.4}
-            rings={3}
-            spread={12}
-            fade={5}
-            spacing={0.5}
-            tint="#ff5500"
-            tintAmount={0.25}
-          />
-        </div>
+      {/* Hero Section */}
+      <section className="relative w-full min-h-[72vh] flex flex-col items-center justify-center overflow-hidden pt-28 pb-16 border-b border-orange-500/20">
         
         {/* Ambient fire & party glow backdrop */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-r from-orange-600/20 via-pink-600/15 to-purple-600/20 rounded-full blur-[140px] pointer-events-none -z-0" />
@@ -52,15 +37,22 @@ export default function FiestaPage() {
             <span>FORUM LA PAZ 🎃</span>
           </div>
 
-          {/* Central Hero Logo with Fiery Halloween Glow */}
-          <div className="relative mb-4 sm:mb-6 select-none max-w-[720px] w-full px-2 group cursor-pointer">
-            <div className="absolute -inset-4 bg-gradient-to-r from-orange-600/40 via-pink-600/30 to-purple-600/40 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-            <img 
-              src="/alcohoritmo-logo-fuego.jpg" 
-              alt="Alcohoritmo Halloween" 
-              className="w-full h-auto object-contain mx-auto animate-fire-pulse hover:scale-[1.02] transition-transform duration-500"
-              loading="eager"
-            />
+          {/* Fiery Halloween Title */}
+          <div className="mb-4 sm:mb-6 select-none">
+            <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight uppercase drop-shadow-[0_0_35px_rgba(255,107,0,0.7)] drop-shadow-[0_0_70px_rgba(236,72,153,0.35)] flex items-center justify-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-red-500">
+                ALC
+              </span>
+              <span className="inline-block hover:rotate-12 transition-transform duration-300 mx-0.5 sm:mx-1 drop-shadow-[0_0_25px_rgba(255,107,0,0.9)]">
+                🎃
+              </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-pink-500">
+                HORITMO
+              </span>
+            </h1>
+            <p className="font-mono text-xs sm:text-sm tracking-[0.35em] text-orange-300/90 uppercase mt-3">
+              Halloween Edition • V.11 F.255
+            </p>
           </div>
           
           <div className="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 via-pink-100 to-amber-200 max-w-2xl mx-auto text-lg sm:text-2xl font-bold tracking-widest uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] leading-relaxed mb-6">
