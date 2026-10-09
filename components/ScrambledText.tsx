@@ -64,6 +64,21 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
       });
     };
 
+    // Initial scramble animation on mount so user sees it right away
+    split.chars.forEach((el, i) => {
+      const c = el as HTMLElement;
+      gsap.to(c, {
+        duration: duration,
+        delay: i * 0.04,
+        scrambleText: {
+          text: c.dataset.content || '',
+          chars: scrambleChars,
+          speed: speed
+        },
+        ease: 'none'
+      });
+    });
+
     const el = rootRef.current;
     el.addEventListener('pointermove', handleMove);
 
@@ -76,7 +91,7 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
   return (
     <div
       ref={rootRef}
-      className={`m-[7vw] max-w-[800px] font-mono text-[clamp(14px,4vw,32px)] text-white ${className}`}
+      className={`font-mono text-white ${className}`}
       style={style}
     >
       <p>{children}</p>

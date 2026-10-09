@@ -7,7 +7,6 @@ import { FullSchedule } from "@/components/FullSchedule";
 import { PartySection } from "@/components/PartySection";
 import { Footer } from "@/components/Footer";
 import TextLoop from "@/components/TextLoop";
-import GradualBlur from "@/components/GradualBlur";
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { EventItem } from "@/lib/eventsData";
 
@@ -122,20 +121,6 @@ export default async function Home() {
           ⚠️ <b>No se pudieron cargar los eventos.</b> Por favor recarga la página o vuelve en unos minutos.
         </div>
       )}
-      {/* Gradual blur effect on scroll (for mobile viewports) */}
-      <GradualBlur
-        target="page"
-        position="top"
-        height="5rem"
-        strength={2.5}
-        divCount={5}
-        curve="bezier"
-        opacity={1}
-        zIndex={40}
-        responsive={true}
-        mobileHeight="4.5rem"
-        desktopHeight="5.5rem"
-      />
       <Navbar />
       <Hero />
       <CalendarView events={mappedEvents} />
