@@ -4,19 +4,52 @@ import { PartySection } from "@/components/PartySection";
 import DecryptedText from "@/components/DecryptedText";
 import TextLoop from "@/components/TextLoop";
 import SpecularButton from "@/components/SpecularButton";
+import GradualBlur from "@/components/GradualBlur";
+import PatternWaves from "@/components/PatternWaves";
 import { MessageCircle } from "lucide-react";
 
 export default function FiestaPage() {
   return (
     <main className="min-h-screen bg-[#05030A] selection:bg-orange-500/30 overflow-x-hidden relative">
       <Navbar />
+
+      {/* Gradual blur effect on scroll (ideal for mobile) */}
+      <GradualBlur
+        target="page"
+        position="top"
+        height="5rem"
+        strength={2.5}
+        divCount={5}
+        curve="bezier"
+        opacity={1}
+        zIndex={40}
+        responsive={true}
+        mobileHeight="4.5rem"
+        desktopHeight="5.5rem"
+      />
       
       {/* Hero Section */}
       <section className="relative w-full min-h-[72vh] flex flex-col items-center justify-center overflow-hidden pt-32 pb-16">
         
-        {/* Subtle dark ambient atmosphere */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none -z-0" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none -z-0" />
+        {/* PatternWaves background behind the letters */}
+        <div className="absolute inset-0 z-0">
+          <PatternWaves
+            preset="terminal"
+            color="#f97316"
+            backgroundColor="#05030A"
+            opacity={0.65}
+            fade="edges"
+            fadeSize={1.5}
+            interactive={true}
+            speed={0.4}
+            scale={1.2}
+            className="w-full h-full"
+          />
+        </div>
+
+        {/* Ambient overlay gradient to blend with background */}
+        <div className="absolute inset-0 z-1 bg-gradient-to-t from-[#05030A] via-transparent to-[#05030A]/60 pointer-events-none" />
+        <div className="absolute inset-0 z-1 bg-gradient-to-b from-[#05030A]/80 via-transparent to-transparent pointer-events-none" />
 
         <div className="relative z-10 text-center px-4 flex flex-col items-center mt-2 max-w-5xl mx-auto">
           
