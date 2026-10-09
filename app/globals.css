@@ -164,3 +164,40 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
+
+/* ─── Fiery Halloween Party Animations ──────────────── */
+@keyframes firePulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 25px rgba(255, 107, 0, 0.55)) drop-shadow(0 0 50px rgba(236, 72, 153, 0.25));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(255, 107, 0, 0.85)) drop-shadow(0 0 75px rgba(236, 72, 153, 0.45));
+    transform: scale(1.015);
+  }
+}
+
+.animate-fire-pulse {
+  animation: firePulse 3.5s ease-in-out infinite;
+}
+
+@keyframes emberDrift {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-80px) translateX(15px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+.animate-ember {
+  animation: emberDrift 4s ease-in-out infinite;
+}

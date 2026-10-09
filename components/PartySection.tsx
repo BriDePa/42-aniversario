@@ -157,29 +157,40 @@ export function PartySection() {
 
   return (
     <section className="py-24 relative overflow-hidden bg-[#05030A]" id="fiesta">
-      {/* Background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-fuchsia-600/8 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-600/8 rounded-full blur-[140px] pointer-events-none" />
+      {/* Background blobs with warm fire & festival neon atmosphere */}
+      <div className="absolute top-1/6 left-1/4 w-[650px] h-[650px] bg-orange-600/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-fuchsia-600/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
 
         {/* ── HEADER ── */}
         <div className="text-center mb-16 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20 mb-10 font-mono text-sm uppercase tracking-widest">
-            Gran Cierre del {meta.titulo}
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-500/20 text-orange-300 border border-orange-500/30 mb-8 font-mono text-sm uppercase tracking-widest shadow-[0_0_20px_rgba(255,107,0,0.25)]">
+            🔥 Gran Cierre del {meta.titulo} 🎃
           </div>
-          <div className="relative mb-8 max-w-4xl mx-auto px-4">
-            <img src="/alcohoritmo2.jpg" alt="Alcohoritmo Billboard" className="w-full rounded-3xl opacity-80 shadow-[0_0_50px_rgba(255,0,255,0.15)] border border-white/5" />
+          <div className="relative mb-8 max-w-4xl mx-auto px-4 group w-full">
+            <div className="absolute -inset-3 bg-gradient-to-r from-orange-600/35 via-fuchsia-600/30 to-purple-600/35 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition duration-700 pointer-events-none" />
+            <div className="relative rounded-3xl overflow-hidden border border-orange-500/30 bg-black/90 p-4 sm:p-8 shadow-[0_0_60px_rgba(255,107,0,0.35)] flex items-center justify-center">
+              <img 
+                src="/alcohoritmo-logo-fuego.jpg" 
+                alt="Alcohoritmo Halloween Oficial" 
+                className="w-full max-h-[440px] object-contain drop-shadow-[0_0_40px_rgba(255,107,0,0.65)] hover:scale-[1.01] transition-transform duration-500" 
+                loading="eager"
+              />
+            </div>
           </div>
-          <p className="text-xl sm:text-2xl text-zinc-300 font-medium max-w-2xl mt-4">{party.eslogan}</p>
+          <p className="text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-orange-200 via-pink-100 to-purple-200 font-semibold max-w-2xl mt-4">
+            {party.eslogan}
+          </p>
         </div>
 
         {/* ── INFO CARDS ── */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          <BorderGlow colors={["#a855f7", "#ec4899"]} className="w-full">
+          <BorderGlow colors={["#ff6b00", "#ec4899"]} className="w-full">
             <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full flex flex-col justify-between">
               <div>
-                <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 text-purple-400">
+                <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-400">
                   <MapPin size={24} />
                 </div>
                 <h4 className="text-lg font-bold text-white mb-2">Locación Oficial</h4>
@@ -187,7 +198,7 @@ export function PartySection() {
                   href="https://share.google/tFu44qDmaykApMY39" 
                   target="_blank" 
                   rel="noreferrer"
-                  className="text-fuchsia-400 hover:text-fuchsia-300 transition-colors font-medium underline underline-offset-4 decoration-fuchsia-500/50 flex items-center gap-1.5 group"
+                  className="text-orange-400 hover:text-orange-300 transition-colors font-medium underline underline-offset-4 decoration-orange-500/50 flex items-center gap-1.5 group"
                 >
                   <span>{party.lugar}</span>
                 </a>
@@ -206,7 +217,7 @@ export function PartySection() {
             </div>
           </BorderGlow>
 
-          <BorderGlow colors={["#ec4899", "#8b5cf6"]} className="w-full">
+          <BorderGlow colors={["#f59e0b", "#ec4899"]} className="w-full">
             <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -233,7 +244,7 @@ export function PartySection() {
             </div>
           </BorderGlow>
 
-          <BorderGlow colors={["#f97316", "#f43f5e"]} className="w-full">
+          <BorderGlow colors={["#10b981", "#ff6b00"]} className="w-full">
             <div className="bg-[#0a0a0a] rounded-[inherit] p-8 h-full flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mb-6 text-orange-400">
@@ -606,8 +617,8 @@ export function PartySection() {
         {/* ── TICKET INTERACTIVO — Pase de Acceso al final tras leer todo ── */}
         <div id="tu-pase-acceso" className="flex flex-col items-center justify-center pt-10 pb-8 z-10 relative scroll-mt-24">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-fuchsia-500/10 text-fuchsia-300 border border-fuchsia-500/20 font-mono text-xs uppercase tracking-widest mb-3">
-              Comunidad Oficial
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-orange-500/20 to-pink-500/20 text-orange-300 border border-orange-500/30 font-mono text-xs uppercase tracking-widest mb-3">
+              🔥 Comunidad Oficial 🎃
             </div>
             <h3 className="text-3xl font-bold text-white mb-2">Tu Pase de Acceso</h3>
             <p className="text-zinc-400 text-sm max-w-md mx-auto">
@@ -621,24 +632,27 @@ export function PartySection() {
               width={620}
               height={220}
               stubSize={160}
-              stubBackground="linear-gradient(135deg, #ec4899, #a855f7)"
-              className="drop-shadow-[0_0_50px_rgba(236,72,153,0.3)]"
+              stubBackground="linear-gradient(135deg, #ff5500, #ec4899, #a855f7)"
+              className="drop-shadow-[0_0_50px_rgba(255,107,0,0.35)]"
               onTear={() => window.open(meta.whatsappGrupoOficial, "_blank")}
               stub={
                 <div className="flex flex-col items-center justify-center h-full w-full gap-1">
                   <Ticket size={24} className="text-white" />
                   <span className="text-white font-black text-xl tracking-wider">GRUPO</span>
-                  <span className="text-fuchsia-100 font-mono text-xs uppercase">WhatsApp</span>
+                  <span className="text-orange-100 font-mono text-xs uppercase">WhatsApp</span>
                 </div>
               }
             >
-              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-10 border border-fuchsia-500/20 rounded-l-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/10 blur-3xl rounded-full" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full" />
-                <h4 className="text-4xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 mb-2 relative z-10">
+              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-10 border border-orange-500/30 rounded-l-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/15 blur-3xl rounded-full" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-fuchsia-500/15 blur-3xl rounded-full" />
+                <h4 className="text-4xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 mb-2 relative z-10">
                   ALCOHORITMO
                 </h4>
-                <p className="text-lg text-zinc-400 uppercase tracking-widest relative z-10">Halloween V.11 F.255</p>
+                <p className="text-lg text-zinc-300 uppercase tracking-widest relative z-10 flex items-center gap-2">
+                  <span>Halloween V.11 F.255</span>
+                  <span className="text-orange-400">🎃</span>
+                </p>
                 <div className="mt-4 inline-flex px-3 py-1 bg-white/5 rounded-lg border border-white/10 w-fit relative z-10">
                   <span className="text-xs text-zinc-300 font-mono">Desprende para unirte al canal</span>
                 </div>
@@ -652,8 +666,8 @@ export function PartySection() {
               width={340}
               height={140}
               stubSize={90}
-              stubBackground="linear-gradient(135deg, #ec4899, #a855f7)"
-              className="drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]"
+              stubBackground="linear-gradient(135deg, #ff5500, #ec4899, #a855f7)"
+              className="drop-shadow-[0_0_30px_rgba(255,107,0,0.35)]"
               onTear={() => window.open(meta.whatsappGrupoOficial, "_blank")}
               stub={
                 <div className="flex flex-col items-center justify-center h-full w-full p-2">
@@ -662,11 +676,11 @@ export function PartySection() {
                 </div>
               }
             >
-              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-4 border border-fuchsia-500/20 rounded-l-2xl">
-                <h4 className="text-xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-500 mb-1">
+              <div className="flex flex-col justify-center h-full bg-[#110d18] text-white p-4 border border-orange-500/30 rounded-l-2xl">
+                <h4 className="text-xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 mb-1">
                   ALCOHORITMO
                 </h4>
-                <p className="text-xs text-zinc-400 uppercase tracking-widest">Canal Oficial</p>
+                <p className="text-xs text-zinc-300 uppercase tracking-widest">Canal Oficial 🎃</p>
               </div>
             </TearTicket>
           </div>

@@ -24,7 +24,9 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-300">
           <a href="/" className="hover:text-fuchsia-400 transition-colors">Inicio</a>
           <a href="/#eventos" className="hover:text-fuchsia-400 transition-colors">Cronograma</a>
-          <a href="/fiesta" className="text-white font-bold hover:text-fuchsia-400 transition-colors drop-shadow-[0_0_10px_rgba(255,0,255,0.5)]">Fiesta de la carrera</a>
+          <a href="/fiesta" className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 font-bold hover:opacity-85 transition-opacity drop-shadow-[0_0_14px_rgba(255,107,0,0.5)] flex items-center gap-1.5">
+            🔥 Fiesta Alcohoritmo
+          </a>
           
         </div>
 
@@ -50,7 +52,9 @@ export function Navbar() {
         <div className="md:hidden absolute top-[80px] left-4 right-4 rounded-2xl bg-black/90 backdrop-blur-xl border border-white/10 p-6 flex flex-col gap-4 shadow-2xl">
           <a href="/" onClick={() => setIsOpen(false)} className="text-white text-lg">Inicio</a>
           <a href="/#eventos" onClick={() => setIsOpen(false)} className="text-zinc-300 text-lg">Cronograma Completo</a>
-          <a href="/fiesta" onClick={() => setIsOpen(false)} className="text-fuchsia-400 font-bold text-lg">Fiesta de la carrera</a>
+          <a href="/fiesta" onClick={() => setIsOpen(false)} className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 font-bold text-lg flex items-center gap-2">
+            🔥 Fiesta Alcohoritmo 🎃
+          </a>
           
           <div className="h-px bg-white/10 my-2" />
           {/* <a href="/admin" className="w-full block text-center text-white px-5 py-3 rounded-full border border-fuchsia-500/50 bg-fuchsia-500/20 font-bold">
