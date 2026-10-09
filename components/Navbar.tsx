@@ -25,7 +25,7 @@ export function Navbar() {
           <a href="/" className="hover:text-fuchsia-400 transition-colors">Inicio</a>
           <a href="/#eventos" className="hover:text-fuchsia-400 transition-colors">Cronograma</a>
           <a href="/fiesta" className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 font-bold hover:opacity-85 transition-opacity drop-shadow-[0_0_14px_rgba(255,107,0,0.5)] flex items-center gap-1.5">
-            🔥 Fiesta Alcohoritmo
+            Fiesta Alcohoritmo
           </a>
           
         </div>
@@ -53,7 +53,7 @@ export function Navbar() {
           <a href="/" onClick={() => setIsOpen(false)} className="text-white text-lg">Inicio</a>
           <a href="/#eventos" onClick={() => setIsOpen(false)} className="text-zinc-300 text-lg">Cronograma Completo</a>
           <a href="/fiesta" onClick={() => setIsOpen(false)} className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 font-bold text-lg flex items-center gap-2">
-            🔥 Fiesta Alcohoritmo 🎃
+            Fiesta Alcohoritmo
           </a>
           
           <div className="h-px bg-white/10 my-2" />

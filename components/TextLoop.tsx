@@ -23,7 +23,6 @@ export interface TextLoopProps {
   ribbonColor?: string;
   ribbonWidth?: number;
   pauseOnHover?: boolean;
-  /** Override the SVG canvas height (default 520). Use ~90 for shape="line". */
   viewHeight?: number;
   className?: string;
   style?: CSSProperties;
@@ -35,39 +34,42 @@ interface Metrics {
 }
 
 const VIEW_W = 1200;
+const VIEW_H = 520;
+const CX = VIEW_W / 2;
+const CY = VIEW_H / 2;
 const EDGE_PAD = 6;
 
-const buildPath = (shape: TextLoopShape, curviness: number, ribbonWidth: number, cx: number, cy: number): string => {
+const buildPath = (shape: TextLoopShape, curviness: number, ribbonWidth: number): string => {
   const c = Math.max(0, curviness);
-  const room = Math.max(20, cy - Math.max(0, ribbonWidth) / 2 - EDGE_PAD);
+  const room = Math.max(20, CY - Math.max(0, ribbonWidth) / 2 - EDGE_PAD);
 
   switch (shape) {
     case 'circle': {
       const r = Math.min(90 + c * 0.95, room);
-      return `M ${cx - r} ${cy} A ${r} ${r} 0 1 1 ${cx + r} ${cy} A ${r} ${r} 0 1 1 ${cx - r} ${cy} Z`;
+      return `M ${CX - r} ${CY} A ${r} ${r} 0 1 1 ${CX + r} ${CY} A ${r} ${r} 0 1 1 ${CX - r} ${CY} Z`;
     }
     case 'infinity': {
       const r = 150 + c * 1.4;
       const h = Math.min(60 + c * 0.95, room);
       return [
-        `M ${cx} ${cy}`,
-        `C ${cx + r * 0.55} ${cy - h} ${cx + r} ${cy - h} ${cx + r} ${cy}`,
-        `C ${cx + r} ${cy + h} ${cx + r * 0.55} ${cy + h} ${cx} ${cy}`,
-        `C ${cx - r * 0.55} ${cy - h} ${cx - r} ${cy - h} ${cx - r} ${cy}`,
-        `C ${cx - r} ${cy + h} ${cx - r * 0.55} ${cy + h} ${cx} ${cy}`,
+        `M ${CX} ${CY}`,
+        `C ${CX + r * 0.55} ${CY - h} ${CX + r} ${CY - h} ${CX + r} ${CY}`,
+        `C ${CX + r} ${CY + h} ${CX + r * 0.55} ${CY + h} ${CX} ${CY}`,
+        `C ${CX - r * 0.55} ${CY - h} ${CX - r} ${CY - h} ${CX - r} ${CY}`,
+        `C ${CX - r} ${CY + h} ${CX - r * 0.55} ${CY + h} ${CX} ${CY}`,
         'Z'
       ].join(' ');
     }
     case 'arch': {
       const rise = Math.min(120 + c * 1.1, room * 2);
-      return `M 120 ${cy + rise / 2} Q ${cx} ${cy - rise * 1.5} ${VIEW_W - 120} ${cy + rise / 2}`;
+      return `M 120 ${CY + rise / 2} Q ${CX} ${CY - rise * 1.5} ${VIEW_W - 120} ${CY + rise / 2}`;
     }
     case 'line':
-      return `M -320 ${cy} L ${VIEW_W + 320} ${cy}`;
+      return `M -320 ${CY} L ${VIEW_W + 320} ${CY}`;
     case 'wave':
     default: {
       const a = Math.min(c * 2.2, room * 2);
-      return `M -320 ${cy} Q -160 ${cy - a} 0 ${cy} T 320 ${cy} T 640 ${cy} T 960 ${cy} T 1280 ${cy} T ${VIEW_W + 320} ${cy}`;
+      return `M -320 ${CY} Q -160 ${CY - a} 0 ${CY} T 320 ${CY} T 640 ${CY} T 960 ${CY} T 1280 ${CY} T ${VIEW_W + 320} ${CY}`;
     }
   }
 };
@@ -89,13 +91,10 @@ const TextLoop = ({
   ribbonColor = '#5227FF',
   ribbonWidth = 86,
   pauseOnHover = true,
-  viewHeight = 520,
+  viewHeight,
   className = '',
   style = {}
 }: TextLoopProps) => {
-  const VIEW_H = viewHeight;
-  const CX = VIEW_W / 2;
-  const CY = VIEW_H / 2;
   const rootRef = useRef<HTMLDivElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
   const measureRef = useRef<SVGTextElement | null>(null);
@@ -107,7 +106,7 @@ const TextLoop = ({
   const rawId = useId();
   const pathId = `text-loop-${rawId.replace(/:/g, '')}`;
 
-  const d = useMemo(() => path || buildPath(shape, curviness, ribbonWidth, CX, CY), [path, shape, curviness, ribbonWidth, CX, CY]);
+  const d = useMemo(() => path || buildPath(shape, curviness, ribbonWidth), [path, shape, curviness, ribbonWidth]);
 
   const unit = useMemo(() => {
     const base = uppercase ? String(text).toUpperCase() : String(text);
@@ -201,11 +200,16 @@ const TextLoop = ({
   const loopText = unit.repeat(metrics.reps);
   const fitLength = metrics.length || undefined;
 
+  const isLine = shape === 'line';
+  const effectiveH = viewHeight || (isLine ? Math.max(ribbonWidth, 50) * 2 : VIEW_H);
+  const vbY = isLine ? CY - (effectiveH / 2) : 0;
+  const vbH = effectiveH;
+
   return (
     <div ref={rootRef} className={`relative w-full overflow-hidden ${className}`.trim()} style={style}>
       <svg
         className="block w-full h-auto"
-        viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+        viewBox={`0 ${vbY} ${VIEW_W} ${vbH}`}
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={text}

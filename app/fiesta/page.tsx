@@ -1,61 +1,52 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PartySection } from "@/components/PartySection";
+import DecryptedText from "@/components/DecryptedText";
+import TextLoop from "@/components/TextLoop";
 import SpecularButton from "@/components/SpecularButton";
 import { MessageCircle } from "lucide-react";
 
 export default function FiestaPage() {
   return (
-    <main className="min-h-screen bg-[#05030A] selection:bg-fuchsia-500/30 overflow-x-hidden relative">
+    <main className="min-h-screen bg-[#05030A] selection:bg-orange-500/30 overflow-x-hidden relative">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative w-full min-h-[72vh] flex flex-col items-center justify-center overflow-hidden pt-28 pb-16 border-b border-orange-500/20">
+      <section className="relative w-full min-h-[72vh] flex flex-col items-center justify-center overflow-hidden pt-32 pb-16">
         
-        {/* Ambient fire & party glow backdrop */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-r from-orange-600/20 via-pink-600/15 to-purple-600/20 rounded-full blur-[140px] pointer-events-none -z-0" />
-        
-        {/* Overlay gradient to blend edges */}
-        <div className="absolute inset-0 z-1 bg-gradient-to-t from-[#05030A] via-transparent to-[#05030A]/60 pointer-events-none" />
-        <div className="absolute inset-0 z-1 bg-gradient-to-b from-[#05030A]/80 via-transparent to-transparent pointer-events-none" />
+        {/* Subtle dark ambient atmosphere */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-orange-600/10 rounded-full blur-[140px] pointer-events-none -z-0" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-purple-600/10 rounded-full blur-[140px] pointer-events-none -z-0" />
 
-        {/* Floating party embers (pure CSS, lightweight) */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-2">
-          <div className="absolute top-[65%] left-[20%] w-2 h-2 rounded-full bg-orange-400 blur-[1px] animate-ember" style={{ animationDelay: '0s', animationDuration: '3.5s' }} />
-          <div className="absolute top-[60%] left-[35%] w-1.5 h-1.5 rounded-full bg-amber-300 blur-[1px] animate-ember" style={{ animationDelay: '1.2s', animationDuration: '4.2s' }} />
-          <div className="absolute top-[70%] left-[55%] w-2 h-2 rounded-full bg-pink-400 blur-[1px] animate-ember" style={{ animationDelay: '2.1s', animationDuration: '3.8s' }} />
-          <div className="absolute top-[62%] left-[75%] w-2.5 h-2.5 rounded-full bg-orange-500 blur-[1px] animate-ember" style={{ animationDelay: '0.7s', animationDuration: '4.5s' }} />
-          <div className="absolute top-[68%] left-[85%] w-1.5 h-1.5 rounded-full bg-yellow-400 blur-[1px] animate-ember" style={{ animationDelay: '1.8s', animationDuration: '3.9s' }} />
-        </div>
-
-        <div className="relative z-10 text-center px-4 flex flex-col items-center mt-4 md:mt-8 max-w-5xl mx-auto">
+        <div className="relative z-10 text-center px-4 flex flex-col items-center mt-2 max-w-5xl mx-auto">
           
-          {/* Top festive badge */}
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-purple-500/20 text-orange-300 border border-orange-500/40 mb-6 font-mono text-xs sm:text-sm font-bold tracking-[0.25em] uppercase shadow-[0_0_25px_rgba(255,107,0,0.25)]">
-            <span>🔥 16 DE OCTUBRE</span>
-            <span className="text-pink-400">•</span>
-            <span>FORUM LA PAZ 🎃</span>
+          {/* Top badge without emojis */}
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30 mb-8 font-mono text-xs sm:text-sm font-bold tracking-[0.25em] uppercase">
+            <span>16 DE OCTUBRE</span>
+            <span className="text-zinc-600">•</span>
+            <span>FORUM LA PAZ</span>
           </div>
 
-          {/* Fiery Halloween Title */}
-          <div className="mb-4 sm:mb-6 select-none">
-            <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight uppercase drop-shadow-[0_0_35px_rgba(255,107,0,0.7)] drop-shadow-[0_0_70px_rgba(236,72,153,0.35)] flex items-center justify-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-500 to-red-500">
-                ALC
-              </span>
-              <span className="inline-block hover:rotate-12 transition-transform duration-300 mx-0.5 sm:mx-1 drop-shadow-[0_0_25px_rgba(255,107,0,0.9)]">
-                🎃
-              </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-500 to-pink-500">
-                HORITMO
-              </span>
+          {/* DecryptedText ALCOHORITMO */}
+          <div className="mb-6 select-none flex flex-col items-center justify-center">
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase font-mono">
+              <DecryptedText
+                text="ALCOHORITMO"
+                speed={40}
+                maxIterations={18}
+                sequential={true}
+                revealDirection="center"
+                animateOn="view"
+                className="text-white drop-shadow-[0_0_35px_rgba(249,115,22,0.5)]"
+                encryptedClassName="text-orange-500 font-mono"
+              />
             </h1>
-            <p className="font-mono text-xs sm:text-sm tracking-[0.35em] text-orange-300/90 uppercase mt-3">
-              Halloween Edition • V.11 F.255
+            <p className="font-mono text-xs sm:text-sm tracking-[0.35em] text-orange-400 uppercase mt-4 font-semibold">
+              HALLOWEEN EDITION • V.11 F.255
             </p>
           </div>
           
-          <div className="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 via-pink-100 to-amber-200 max-w-2xl mx-auto text-lg sm:text-2xl font-bold tracking-widest uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] leading-relaxed mb-6">
+          <div className="text-zinc-300 max-w-2xl mx-auto text-base sm:text-xl font-medium tracking-wide uppercase drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] leading-relaxed mb-8">
             Gran Fiesta Oficial de Aniversario
           </div>
 
@@ -74,7 +65,7 @@ export default function FiestaPage() {
                 intensity={1.3}
                 autoAnimate={true}
                 speed={0.4}
-                className="font-mono text-xs font-semibold tracking-wider uppercase px-5 py-2.5 shadow-[0_0_25px_rgba(255,107,0,0.3)] hover:shadow-[0_0_35px_rgba(255,107,0,0.5)] transition-shadow"
+                className="font-mono text-xs font-semibold tracking-wider uppercase px-5 py-2.5 shadow-[0_0_25px_rgba(255,107,0,0.25)] hover:shadow-[0_0_35px_rgba(255,107,0,0.45)] transition-shadow"
               >
                 <span className="flex items-center gap-2">
                   <MessageCircle size={15} className="text-emerald-400" />
@@ -86,6 +77,24 @@ export default function FiestaPage() {
           </div>
         </div>
       </section>
+
+      {/* Sección divisoria con TextLoop en color naranja */}
+      <div className="w-full relative z-20">
+        <TextLoop
+          text="ALCOHORITMO 2026 // HALLOWEEN EDITION // 16 DE OCTUBRE // FORUM LA PAZ // PREVENTA TIER 1 DISPONIBLE"
+          shape="line"
+          ribbon={true}
+          ribbonColor="#f97316"
+          ribbonWidth={50}
+          color="#05030a"
+          fontSize={18}
+          fontWeight={900}
+          letterSpacing={3}
+          speed={75}
+          pauseOnHover={false}
+          className="w-full shadow-[0_0_30px_rgba(249,115,22,0.35)]"
+        />
+      </div>
 
       <div className="relative z-20 bg-[#05030A]">
         <PartySection />
