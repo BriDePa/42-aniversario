@@ -458,12 +458,22 @@ export default function ASCIIText({
       gl.bindTexture(gl.TEXTURE_2D, glyphTexture);
       gl.uniform1i(uniforms.uGlyphs, 1);
       gl.uniform2f(uniforms.uSize, width, height);
-      gl.uniform2f(uniforms.uCell, s.cellSize * 0.62 * dpr, s.cellSize * dpr);
+      const screenAspect = width / height;
+      // Formula guarantees text always fits inside 86% of viewport width without horizontal clipping
+      const maxPlaneHeightForWidth = state.textAspect > 0
+        ? (screenAspect / state.textAspect) * 0.86
+        : 0.5 * s.textScale;
+      const desiredPlaneHeight = 0.5 * s.textScale;
+      const finalPlaneHeight = Math.min(desiredPlaneHeight, maxPlaneHeightForWidth);
+
+      // Scale cell size down proportionally on narrow screens so letters remain crisp
+      const isMobile = screenAspect < 0.85;
+      const effectiveCellSize = isMobile ? Math.max(3.5, s.cellSize * 0.65) : s.cellSize;
+
+      gl.uniform2f(uniforms.uCell, effectiveCellSize * 0.62 * dpr, effectiveCellSize * dpr);
       gl.uniform1f(uniforms.uGlyphCount, state.glyphCount);
       gl.uniform1f(uniforms.uTextAspect, state.textAspect);
-      const aspect = width / height;
-      const responsiveScale = aspect < 1.2 ? Math.max(0.35, (aspect / 1.2)) : 1.0;
-      gl.uniform1f(uniforms.uPlaneHeight, 0.5 * s.textScale * responsiveScale);
+      gl.uniform1f(uniforms.uPlaneHeight, finalPlaneHeight);
       gl.uniform2f(uniforms.uTilt, state.tiltX, state.tiltY);
       gl.uniform1f(uniforms.uTime, state.time);
       gl.uniform1f(uniforms.uWaves, s.waves);

@@ -14,7 +14,7 @@ export default function FiestaPage() {
       <Navbar />
 
       {/* Hero Section: Fondo de pantalla completa con ASCIIText como texto principal */}
-      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex flex-col justify-between items-center overflow-hidden pt-28 pb-12">
+      <section className="relative w-full min-h-[92vh] sm:min-h-screen flex flex-col justify-between items-center overflow-hidden pt-24 sm:pt-28 pb-8 sm:pb-12">
         
         {/* ASCIIText como fondo de pantalla completa y texto principal */}
         <div className="absolute inset-0 z-0">
@@ -36,7 +36,7 @@ export default function FiestaPage() {
 
         {/* PARTE SUPERIOR: FORUM LA PAZ más pequeño */}
         <div className="relative z-10 text-center px-4 pointer-events-auto">
-          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(249,115,22,0.15)]">
+          <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(249,115,22,0.15)]">
             <span className="text-xs sm:text-sm md:text-base font-black tracking-[0.35em] font-mono text-orange-400 uppercase drop-shadow-[0_0_12px_rgba(249,115,22,0.7)]">
               <DecryptedText
                 text="FORUM LA PAZ"
@@ -53,7 +53,7 @@ export default function FiestaPage() {
         </div>
 
         {/* CENTRO: Completamente despejado para que ALCOHORITMO sea el protagonista principal sin obstáculos */}
-        <div className="my-auto py-12 pointer-events-none" />
+        <div className="my-auto py-4 sm:py-12 pointer-events-none" />
 
         {/* PARTE INFERIOR: 16 DE OCTUBRE y botones abajo de ALCOHORITMO */}
         <div className="relative z-10 text-center px-4 flex flex-col items-center max-w-3xl mx-auto w-full pointer-events-auto">
