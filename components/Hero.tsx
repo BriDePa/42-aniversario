@@ -57,8 +57,8 @@ export function Hero() {
 
         {/* Cuenta regresiva: primer evento académico hoy 14:00 y fallback a Gran Fiesta Alcohoritmo 16/10 */}
         <Countdown 
-          targetDate="2026-10-08T14:00:00-04:00" 
-          targetTitle="Inauguración & Coloquio IA"
+          targetDate="2026-10-12T10:00:00-04:00"
+          targetTitle="Inauguración Semana Aniversario"
           fallbackTargetDate="2026-10-16T19:00:00-04:00"
           fallbackTargetTitle="Gran Fiesta Alcohoritmo (Forum)"
         />

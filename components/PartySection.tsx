@@ -739,15 +739,15 @@ export function PartySection() {
             className="relative max-w-lg w-full max-h-[92vh] flex flex-col bg-[#0d0914] border border-fuchsia-500/40 rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(217,70,239,0.35)]"
           >
             {/* Modal header */}
-            <div className="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
-              <div>
+            <div className="p-4 border-b border-white/10 flex items-start sm:items-center justify-between gap-4 bg-black/40">
+                <div className="min-w-0 flex-1">
                 <h4 className="text-lg font-black text-white">{activeModalPoster.nombre}</h4>
                 <p className="text-xs text-zinc-400">{activeModalPoster.subtitulo}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveModalPoster(null)}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors shrink-0 mt-1 sm:mt-0"
                 aria-label="Cerrar poster"
               >
                 <X size={20} />
