@@ -114,7 +114,7 @@ export default function FiestaPage() {
       {/* Sección divisoria con TextLoop en color naranja */}
       <div className="w-full relative z-20">
         <TextLoop
-          text="ALCOHORITMO 2026 // HALLOWEEN EDITION // 16 DE OCTUBRE // FORUM LA PAZ // PREVENTA TIER 1 DISPONIBLE"
+          text="ALCOHORITMO 2026 // HALLOWEEN EDITION // 16 DE OCTUBRE // FORUM LA PAZ // PREVENTA TIER 2 ACTIVA // VIP BS. 40 // GENERAL BS. 25 // MESAS AGOTADAS"
           shape="line"
           ribbon={true}
           ribbonColor="#f97316"

@@ -28,7 +28,7 @@ const COMBOS_DATA: ComboPoster[] = [
     nombre: "Combo Yardas",
     subtitulo: "11 Manillas + 2 Yardas a elección (Vértigo Líquido)",
     imagen: "/combo-yardas.png",
-    disponible: true,
+    disponible: false,
     precioVip: "Bs. 790",
     precioGeneral: "Bs. 690",
   },
@@ -37,7 +37,7 @@ const COMBOS_DATA: ComboPoster[] = [
     nombre: "Combo Principiante",
     subtitulo: "11 Manillas + 1 Mezclador + 1 Botella a elección",
     imagen: "/combo-principiante.png",
-    disponible: true,
+    disponible: false,
     precioVip: "Bs. 700",
     precioGeneral: "Bs. 600",
   },
@@ -46,23 +46,29 @@ const COMBOS_DATA: ComboPoster[] = [
     nombre: "Combo Noob",
     subtitulo: "11 Manillas + 3 Jarras a elección (Pisco, Daiquiri, Mojito, etc.)",
     imagen: "/combo-noob.png",
-    disponible: true,
+    disponible: false,
     precioGeneral: "Bs. 490",
   },
 ];
 
 const AVISOS_FIESTA = [
   {
-    tag: "Beneficio Grupal • 19:00 a 21:00",
-    titulo: "Ingreso de Botella Sellada (Grupos de 10)",
-    detalle: "De 7:00 PM a 9:00 PM (19:00 a 21:00), los grupos de 10 personas tienen permitido el ingreso de 1 botella de vidrio sellada original a la fiesta.",
+    tag: "Aforo y Mesas • 100% SOLD OUT",
+    titulo: "Mesas Totalmente Agotadas",
+    detalle: "El 100% de las mesas y reservas grupales en Forum Club se han agotado. Para ingresar, adquiere tus entradas individuales en Preventa Tier 2.",
+    tipo: "alerta",
+  },
+  {
+    tag: "Preventa Oficial • TIER 2",
+    titulo: "Tier 2 Activo: VIP Bs. 40 / General Bs. 25",
+    detalle: "Entradas individuales oficiales disponibles. General mantiene su precio a Bs. 25 y VIP a Bs. 40 hasta agotar el cupo de preventa.",
     tipo: "exclusivo",
   },
   {
-    tag: "Aforo y Mesas",
-    titulo: "Mesas Exclusivas Limitadas",
-    detalle: "Las ubicaciones de mesas en Forum Club se asignan por orden de reserva con confirmación de combo. Cupos limitados por seguridad.",
-    tipo: "alerta",
+    tag: "Beneficio Grupal • 19:00 a 21:00",
+    titulo: "Ingreso de Botella Sellada (Grupos de 10)",
+    detalle: "De 7:00 PM a 9:00 PM (19:00 a 21:00), los grupos de 10 personas con entrada tienen permitido el ingreso de 1 botella de vidrio sellada original a la fiesta.",
+    tipo: "exclusivo",
   },
   {
     tag: "Control de Acceso",
@@ -75,12 +81,6 @@ const AVISOS_FIESTA = [
     titulo: "Pase al Apocalipsis Zombie",
     detalle: "Conserva tu manilla oficial intacta para ingresar sin costo alguno a la fiesta del sábado 17 de octubre en Forum.",
     tipo: "exclusivo",
-  },
-  {
-    tag: "Horario de Puertas",
-    titulo: "Apertura Puntual 19:00",
-    detalle: "Recomendamos llegar temprano para evitar filas en portería y aprovechar la estación de maquillaje neón UV en sala.",
-    tipo: "info",
   },
 ];
 
@@ -160,23 +160,23 @@ export function PartySection() {
                   <div className="w-12 h-12 bg-fuchsia-500/20 rounded-2xl flex items-center justify-center text-fuchsia-400">
                     <Ticket size={24} />
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40 font-mono text-[11px] font-bold tracking-wider uppercase">
-                    TIER 1 PREVENTA
+                  <span className="px-3 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40 font-mono text-[11px] font-black tracking-wider uppercase animate-pulse">
+                    TIER 2 PREVENTA ACTIVA
                   </span>
                 </div>
                 <h4 className="text-lg font-bold text-white mb-2">Entradas Individuales</h4>
                 <div className="flex flex-wrap gap-3 mb-2">
                   <div className="bg-black/40 px-3.5 py-2 rounded-xl border border-white/10 flex-1">
-                    <span className="text-[11px] text-zinc-400 uppercase tracking-wider block font-mono">General T1</span>
-                    <span className="text-white font-extrabold text-lg">{party.preciosTier1.general} {party.preciosTier1.moneda}</span>
+                    <span className="text-[11px] text-zinc-400 uppercase tracking-wider block font-mono">General T2</span>
+                    <span className="text-white font-extrabold text-lg">25 Bs</span>
                   </div>
                   <div className="bg-fuchsia-500/10 px-3.5 py-2 rounded-xl border border-fuchsia-500/30 flex-1">
-                    <span className="text-[11px] text-fuchsia-300 uppercase tracking-wider block font-mono">VIP T1</span>
-                    <span className="text-white font-extrabold text-lg">{party.preciosTier1.vip} {party.preciosTier1.moneda}</span>
+                    <span className="text-[11px] text-fuchsia-300 uppercase tracking-wider block font-mono">VIP T2</span>
+                    <span className="text-white font-extrabold text-lg">40 Bs</span>
                   </div>
                 </div>
               </div>
-              <p className="text-[11px] text-zinc-500 mt-3 font-mono">{party.preciosTier1.condicion}</p>
+              <p className="text-[11px] text-zinc-500 mt-3 font-mono">Preventa TIER 2 activa • General mantiene precio a Bs. 25 y VIP a Bs. 40</p>
             </div>
           </BorderGlow>
 
@@ -296,16 +296,16 @@ export function PartySection() {
         <div className="mb-24" id="combos">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-pink-400 to-purple-400 uppercase tracking-widest my-4 drop-shadow-[0_0_25px_rgba(217,70,239,0.3)]">
-              Combos Oficiales
+              Mesas & Combos
             </h2>
             <p className="text-zinc-400 max-w-xl mx-auto -mt-2">
-              Posters oficiales de combinados para grupos. Pulsa sobre cualquier cartel para ampliar los detalles.
+              Posters informativos de los combinados grupales oficiales para Alcohoritmo.
             </p>
 
-            {/* Aviso de Combos Agotados */}
-            <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-xs sm:text-sm font-mono font-bold tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span>COMBOS DE 16 Y 21 MANILLAS AGOTADOS • ÚLTIMOS CUPOS EN COMBOS DE 11 MANILLAS</span>
+            {/* Aviso oficial: Mesas 100% Agotadas */}
+            <div className="mt-6 inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-red-950/40 border border-red-500/50 text-red-300 text-xs sm:text-sm font-mono font-black tracking-wide shadow-[0_0_30px_rgba(239,68,68,0.25)]">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+              <span>MESAS 100% AGOTADAS (SOLD OUT) • TODAS LAS UBICACIONES RESERVADAS</span>
             </div>
           </div>
 
@@ -330,7 +330,7 @@ export function PartySection() {
                     <img
                       src={combo.imagen}
                       alt={combo.nombre}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-80"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A0713] via-transparent to-transparent opacity-80" />
 
@@ -347,9 +347,9 @@ export function PartySection() {
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border ${
                         combo.disponible
                           ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
-                          : "bg-purple-500/20 text-purple-300 border-purple-500/40"
+                          : "bg-red-500/25 text-red-300 border-red-500/50 backdrop-blur-sm"
                       }`}>
-                        {combo.disponible ? "Disponible" : "Próximamente"}
+                        {combo.disponible ? "Disponible" : "Agotado / Sold Out"}
                       </span>
                     </div>
                   </div>
@@ -381,22 +381,29 @@ export function PartySection() {
                       </div>
                     </div>
 
-                    {/* SlideCommit Action: Desliza para reservar por WhatsApp */}
+                    {/* SlideCommit Action o Botón Agotado */}
                     <div className="flex justify-center w-full pt-1">
-                      <SlideCommit
-                        width={240}
-                        height={46}
-                        radius={23}
-                        trackColor="#1a0b2e"
-                        handleColor="#d946ef"
-                        successColor="#22c55e"
-                        label={`Desliza: Reservar`}
-                        doneLabel="Abriendo..."
-                        onConfirm={() => {
-                          window.open(buildComboWhatsAppUrl(combo.nombre), "_blank");
-                        }}
-                        className="shadow-[0_0_15px_rgba(217,70,239,0.25)]"
-                      />
+                      {combo.disponible ? (
+                        <SlideCommit
+                          width={240}
+                          height={46}
+                          radius={23}
+                          trackColor="#1a0b2e"
+                          handleColor="#d946ef"
+                          successColor="#22c55e"
+                          label={`Desliza: Reservar`}
+                          doneLabel="Abriendo..."
+                          onConfirm={() => {
+                            window.open(buildComboWhatsAppUrl(combo.nombre), "_blank");
+                          }}
+                          className="shadow-[0_0_15px_rgba(217,70,239,0.25)]"
+                        />
+                      ) : (
+                        <div className="w-full py-2.5 px-4 rounded-full bg-red-500/10 border border-red-500/30 text-center font-mono text-xs font-bold text-red-400 uppercase tracking-wider flex items-center justify-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-red-500" />
+                          <span>Mesa Agotada</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -723,20 +730,27 @@ export function PartySection() {
                 <span className="text-sm font-bold text-emerald-300 font-mono">GRAL: {activeModalPoster.precioGeneral}</span>
               </div>
               <div className="w-full sm:w-auto flex justify-center">
-                <SlideCommit
-                  width={220}
-                  height={46}
-                  radius={23}
-                  trackColor="#1a0b2e"
-                  handleColor="#d946ef"
-                  successColor="#22c55e"
-                  label="Desliza: Reservar"
-                  doneLabel="Abriendo..."
-                  onConfirm={() => {
-                    window.open(buildComboWhatsAppUrl(activeModalPoster.nombre), "_blank");
-                  }}
-                  className="shadow-[0_0_20px_rgba(217,70,239,0.35)]"
-                />
+                {activeModalPoster.disponible ? (
+                  <SlideCommit
+                    width={220}
+                    height={46}
+                    radius={23}
+                    trackColor="#1a0b2e"
+                    handleColor="#d946ef"
+                    successColor="#22c55e"
+                    label="Desliza: Reservar"
+                    doneLabel="Abriendo..."
+                    onConfirm={() => {
+                      window.open(buildComboWhatsAppUrl(activeModalPoster.nombre), "_blank");
+                    }}
+                    className="shadow-[0_0_20px_rgba(217,70,239,0.35)]"
+                  />
+                ) : (
+                  <div className="py-2.5 px-6 rounded-full bg-red-500/15 border border-red-500/40 text-center font-mono text-xs font-bold text-red-300 uppercase tracking-wider flex items-center justify-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    <span>Mesa Agotada (Sold Out)</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
