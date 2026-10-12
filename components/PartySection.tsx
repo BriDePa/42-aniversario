@@ -24,60 +24,6 @@ interface ComboPoster {
 
 const COMBOS_DATA: ComboPoster[] = [
   {
-    id: "combo-party",
-    nombre: "Combo Party",
-    subtitulo: "21 Manillas + 2 Mezcladores + 2 Botellas a elección",
-    imagen: "/combo-party.png",
-    disponible: true,
-    precioVip: "Bs. 1400",
-    precioGeneral: "Bs. 1200",
-  },
-  {
-    id: "combo-boys",
-    nombre: "Combo Boys",
-    subtitulo: "21 Manillas + 1 Mezclador + Flor de Caña 5 Años + 1 Yarda a elección (Big Power, Mexicana, Cerveza)",
-    imagen: "/combo-boys.png",
-    disponible: true,
-    precioVip: "Bs. 1300",
-    precioGeneral: "Bs. 1100",
-  },
-  {
-    id: "combo-girls",
-    nombre: "Combo Girls",
-    subtitulo: "21 Manillas + 1 Mezclador + Parrales + 1 Yarda a elección (Paradise, Ripley)",
-    imagen: "/combo-girls.png",
-    disponible: true,
-    precioVip: "Bs. 1270",
-    precioGeneral: "Bs. 1070",
-  },
-  {
-    id: "combo-remix",
-    nombre: "Combo Remix",
-    subtitulo: "16 Manillas + 350 Bs de Consumo + 1 Yarda a elección + 1 Jarra a elección",
-    imagen: "/combo-remix.png",
-    disponible: true,
-    precioVip: "Bs. 1175",
-    precioGeneral: "Bs. 1025",
-  },
-  {
-    id: "combo-cocteles",
-    nombre: "Combo Cócteles",
-    subtitulo: "16 Manillas + 6 Jarras (Pisco Sour, Caliz de la Casa, Margarita, By Forum, Caipirina, Daiquiri, Oasis)",
-    imagen: "/combo-cocteles.png",
-    disponible: true,
-    precioVip: "Bs. 1085",
-    precioGeneral: "Bs. 935",
-  },
-  {
-    id: "combo-xtreme",
-    nombre: "Combo X-Treme",
-    subtitulo: "16 Manillas + 3 Mezcladores + 1825 + Buhero Negro + Amarula",
-    imagen: "/combo-xtreme.png",
-    disponible: true,
-    precioVip: "Bs. 1655",
-    precioGeneral: "Bs. 1505",
-  },
-  {
     id: "combo-yardas",
     nombre: "Combo Yardas",
     subtitulo: "11 Manillas + 2 Yardas a elección (Vértigo Líquido)",
@@ -355,9 +301,15 @@ export function PartySection() {
             <p className="text-zinc-400 max-w-xl mx-auto -mt-2">
               Posters oficiales de combinados para grupos. Pulsa sobre cualquier cartel para ampliar los detalles.
             </p>
+
+            {/* Aviso de Combos Agotados */}
+            <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/30 text-red-300 text-xs sm:text-sm font-mono font-bold tracking-wide">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span>COMBOS DE 16 Y 21 MANILLAS AGOTADOS • ÚLTIMOS CUPOS EN COMBOS DE 11 MANILLAS</span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {COMBOS_DATA.map((combo) => (
               <BorderGlow 
                 key={combo.id}
